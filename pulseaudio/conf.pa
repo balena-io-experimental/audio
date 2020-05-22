@@ -1,0 +1,3 @@
+load-module module-native-protocol-unix auth-anonymous=true socket=/run/pulse/pulseaudio.socket
+load-module module-native-protocol-tcp auth-anonymous=true port=4317
+load-module module-alsa-sink

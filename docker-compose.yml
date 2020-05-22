@@ -1,0 +1,17 @@
+version: '2'
+
+volumes:
+  pulse:
+
+services:
+
+  pulseaudio:
+    build: ./pulseaudio
+    privileged: true
+    volumes:
+      - 'pulse:/run/pulse'
+
+  pulsetest:
+    build: ./pulsetest
+    volumes:
+      - 'pulse:/run/pulse'

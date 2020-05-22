@@ -1,0 +1,16 @@
+{
+  "name": "pulsetest",
+  "version": "1.0.0",
+  "description": "Some nodejs scripts to test docker pulseaudio",
+  "main": "echo.js",
+  "dependencies": {
+    "pulseaudio2": "^0.2.2",
+    "wav": "^1.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tomás Migone <tomas@balena.io>",
+  "license": "MIT"
+}

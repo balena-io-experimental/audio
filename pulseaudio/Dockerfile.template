@@ -1,0 +1,19 @@
+FROM balenalib/%%BALENA_MACHINE_NAME%%
+
+WORKDIR /usr/src
+
+RUN install_packages pulseaudio
+
+COPY client.conf /etc/pulse/client.conf
+COPY conf.pa /usr/src/conf.pa
+
+# RUN mkdir -p /pulseaudio && chown -R pulse /pulseaudio
+
+# CMD [ "/usr/bin/pulseaudio", "--system", "--file", "/usr/src/conf.pa", "--disallow-exit", "--disallow-module-loading" ]
+CMD [ "balena-idle" ]
+
+
+
+# pulseaudio-alsa alsa-plugins-pulse alsa-utils alsa-utils-doc alsa-lib alsaconf
+
+# bluez bluez-libs bluez-firmware alsa-lib alsa-utils libdaemon popt soxr libconfig avahi python3 mpg123 expect pulseaudio pulseaudio-dev pulseaudio-zeroconf pulseaudio-utils pulseaudio-alsa pulseaudio-bluez pulseaudio-jack
