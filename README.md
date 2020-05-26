@@ -1,6 +1,6 @@
-# balena primitives: audio
+# WIP: balena primitives: audio
 
-Based on pulseaudio
+Based on pulseaudio. This is work in progress, not ready for use.
 
 ## Usage
 
