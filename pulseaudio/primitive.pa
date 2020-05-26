@@ -1,3 +1,6 @@
 load-module module-native-protocol-unix auth-anonymous=true socket=/run/pulse/pulseaudio.socket
 load-module module-native-protocol-tcp auth-anonymous=true port=4317
+
+# Load ALSA modules statically
+# It's better to load them using module-udev-detect but it misconfigures it as mono
 load-module module-alsa-sink

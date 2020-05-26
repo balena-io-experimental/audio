@@ -1,19 +1,17 @@
-FROM balenalib/%%BALENA_MACHINE_NAME%%
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian:buster
+
+# Ensure UDEV is disabled to prevent 'module-udev-detect' from loading ALSA devices
+# We disable this because autodetect misconfigures ALSA devices as mono
+ENV UDEV=off
 
 WORKDIR /usr/src
-
 RUN install_packages pulseaudio
 
+# For local development
+#dev-cmd-live=pulseaudio --system --use-pid-file=false --file /etc/pulse/primitive.pa --log-level=4 || balena-idle
+
+COPY primitive.pa /etc/pulse/primitive.pa
 COPY client.conf /etc/pulse/client.conf
-COPY conf.pa /usr/src/conf.pa
 
-# RUN mkdir -p /pulseaudio && chown -R pulse /pulseaudio
-
-# CMD [ "/usr/bin/pulseaudio", "--system", "--file", "/usr/src/conf.pa", "--disallow-exit", "--disallow-module-loading" ]
-CMD [ "balena-idle" ]
-
-
-
-# pulseaudio-alsa alsa-plugins-pulse alsa-utils alsa-utils-doc alsa-lib alsaconf
-
-# bluez bluez-libs bluez-firmware alsa-lib alsa-utils libdaemon popt soxr libconfig avahi python3 mpg123 expect pulseaudio pulseaudio-dev pulseaudio-zeroconf pulseaudio-utils pulseaudio-alsa pulseaudio-bluez pulseaudio-jack
+COPY entry.sh .
+ENTRYPOINT [ "/bin/bash", "/usr/src/entry.sh" ]
