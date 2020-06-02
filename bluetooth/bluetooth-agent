@@ -16,7 +16,6 @@ import dbus.mainloop.glib
 # Bluez DBus constants
 DBUS_NAME = "org.bluez"
 DBUS_OBJECT = "/org/bluez"
-DBUS_OBJECT_HCI = "/org/bluez/hci0"
 DBUS_INTERFACE_PROPERTIES = "org.freedesktop.DBus.Properties"
 DBUS_INTERFACE_AGENT = "org.bluez.Agent1"
 DBUS_INTERFACE_MANAGER = "org.bluez.AgentManager1"
@@ -26,6 +25,7 @@ DBUS_INTERFACE_ADAPTER = "org.bluez.Adapter1"
 # Agent default settings
 capabilities = [ "KeyboardDisplay", "NoInputNoOutput" ]
 DEFAULT_CAPABILITY = "NoInputNoOutput"
+DEFAULT_INTERFACE = "hci0"
 DEFAULT_PIN_CODE = "0000"
 
 # DBus helper functions
@@ -110,15 +110,17 @@ if __name__ == "__main__":
     # Parse command line options
     parser = argparse.ArgumentParser(description='Balena bluez authentication agent')
     parser.add_argument("-c", "--capability", dest="capability", choices=capabilities, default=DEFAULT_CAPABILITY, help="Define the bluez agent capability. Defaults to 'NoInputNoOutput'.")
+    parser.add_argument("-i", "--interface", dest="interface", default=DEFAULT_INTERFACE, help="Define the bluetooth interface to be used. Defaults to 'hci0'.")
     parser.add_argument("-p", "--pincode", dest="pin_code", default=DEFAULT_PIN_CODE, help="Set PIN Code to be used for authentication. Only used if running in legacy mode (SSP off). Defaults to '0000'")
     args = parser.parse_args()
 
     # Set agent settings
     capability = args.capability or DEFAULT_CAPABILITY
+    interface = args.interface or DEFAULT_INTERFACE
     pin_code = args.pin_code if valid_pin_code(args.pin_code) else DEFAULT_PIN_CODE
 
     # Set bluez discoverable timeout to infinite. Most smartphones won't connect with shorter timeouts
-    dbus_set_property(DBUS_NAME, DBUS_OBJECT_HCI, DBUS_INTERFACE_ADAPTER, "DiscoverableTimeout", dbus.UInt32(0))
+    dbus_set_property(DBUS_NAME, DBUS_OBJECT + '/' + interface, DBUS_INTERFACE_ADAPTER, "DiscoverableTimeout", dbus.UInt32(0))
 
     # Create and register bluetooth agent
     path = "/test/agent"
@@ -128,9 +130,7 @@ if __name__ == "__main__":
     manager.RequestDefaultAgent(path)
 
     # Log agent info
-    print("Bluetooth agent started:")
-    print("- Capability: %s" % (capability))
-    print("- PIN Code: %s" % (pin_code if capability == "KeyboardDisplay" else "not required"))
+    print("Bluetooth agent started!")
 
     mainloop = GLib.MainLoop()
     mainloop.run()
