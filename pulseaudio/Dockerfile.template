@@ -1,4 +1,4 @@
-FROM balenalib/%%BALENA_MACHINE_NAME%%-debian:buster
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian:bullseye
 WORKDIR /usr/src
 
 # Ensure UDEV is disabled to prevent 'module-udev-detect' from loading ALSA devices
