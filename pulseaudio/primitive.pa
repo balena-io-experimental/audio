@@ -5,7 +5,7 @@ load-module module-native-protocol-tcp auth-anonymous=true port=4317
 # It's better to load them using module-udev-detect but it misconfigures it as mono
 load-module module-alsa-sink
 
-# Force bluetooth sources to A2DP profiles
+# Try to force bluetooth sources to A2DP profiles
 load-module module-bluetooth-policy a2dp_source=true hfgw=false auto_switch=0
 
 # See https://github.com/raspberrypi/linux/issues/2229#issuecomment-391397669
