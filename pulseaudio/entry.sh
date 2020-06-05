@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # Helper functions
 function pa_disable_module() {
@@ -19,22 +18,26 @@ pa_disable_module module-bluetooth-discover
 pa_disable_module module-bluetooth-policy
 pa_disable_module module-native-protocol-unix
 
-# Start pulseaudio with default flags:
+# If command starts with an option, prepend pulseaudio to it
+if [[ "${1#-}" != "$1" ]]; then
+  set -- pulseaudio "$@"
+fi
+
+# Set pulseaudio default flags if we are running it
 # - (realtime, high-priority): Ensure we always have enough CPU
-# - (use-pid-file): Disable PID file as it causes bad restarts
+# - (use-pid-file): Disable PID file as it may cause bad restarts due to locked files
 # - (exit-idle-time): Never terminate daemon when idle
-# - (file): Default module configuration, extends '/etc/pulse/default.pa'
+# - (file): Extend '/etc/pulse/default.pa' with '/etc/pulse/primitive.pa'
 if [[ "$1" == *"pulseaudio"* ]]; then
-  USER_FLAGS="${@:2}"
-  DEFAULT_FLAGS="\
-    --log-level=$LOG_LEVEL \
+  shift
+  set -- pulseaudio \
+    --log-level="$LOG_LEVEL" \
     --use-pid-file=false \
     --realtime=true \
     --high-priority=true \
     --exit-idle-time=-1 \
-    --file /etc/pulse/primitive.pa"
-  exec /usr/bin/pulseaudio $DEFAULT_FLAGS $USER_FLAGS
+    --file /etc/pulse/primitive.pa \
+    "$@"
 fi
 
-# Allow CMD pass through if not running pulseaudio
 exec "$@"

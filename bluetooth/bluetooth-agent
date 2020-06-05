@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Bluez authentication agent
 # Based on https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/test/simple-agent
 # and https://github.com/nicokaiser/rpi-audio-receiver/blob/master/install-bluetooth.sh
