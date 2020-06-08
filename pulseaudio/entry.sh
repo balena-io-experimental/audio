@@ -36,7 +36,7 @@ if [[ "$1" == *"pulseaudio"* ]]; then
     --realtime=true \
     --high-priority=true \
     --exit-idle-time=-1 \
-    --file /etc/pulse/primitive.pa \
+    --file=/etc/pulse/primitive.pa \
     "$@"
 fi
 
