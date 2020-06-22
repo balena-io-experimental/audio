@@ -1,9 +1,13 @@
+# Bullseye: pulseaudio 13, can't use amixer to switch outputs
+# Buster: pulseaudio 12, can't use amixer to switch outputs
+# Stretch: pulseaudio 10, amixer works fine
+# does UDEV have anything to do here?
 FROM balenalib/%%BALENA_MACHINE_NAME%%-debian:bullseye-run
 WORKDIR /usr/src
 
 # Ensure UDEV is disabled to prevent 'module-udev-detect' from loading ALSA devices
 # We disable this because autodetect misconfigures ALSA devices as mono
-ENV UDEV=off
+ENV UDEV=on
 
 # DBUS is required for module-bluetooth-discover
 ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
@@ -11,11 +15,12 @@ ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 RUN install_packages pulseaudio pulseaudio-module-bluetooth
 
 # For local development
-#dev-cmd-run install_packages alsa-utils
-#dev-cmd-live=pulseaudio --use-pid-file=false --exit-idle-time=-1 --log-level=4 --file=/etc/pulse/primitive.pa || balena-idle
+RUN install_packages alsa-utils
+#dev-cmdo-live=pulseaudio --use-pid-file=false --exit-idle-time=-1 --log-level=4 --file=/etc/pulse/primitive.pa || balena-idle
 
 COPY primitive.pa /etc/pulse/primitive.pa
 COPY client.conf /etc/pulse/client.conf
 COPY entry.sh .
 ENTRYPOINT [ "/bin/bash", "/usr/src/entry.sh" ]
 CMD [ "pulseaudio" ]
+# CMD [ "balena-idle" ]

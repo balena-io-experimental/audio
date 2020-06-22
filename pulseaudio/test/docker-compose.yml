@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+
+  bullseye:
+    build: ./bullseye
+    privileged: true
+    labels:
+      io.balena.features.dbus: 1
+      io.balena.features.kernel-modules: 1
+      
+  buster:
+    build: ./buster
+    privileged: true
+    labels:
+      io.balena.features.dbus: 1
+      io.balena.features.kernel-modules: 1
+
+  stretch:
+    build: ./stretch
+    privileged: true
+    labels:
+      io.balena.features.dbus: 1
+      io.balena.features.kernel-modules: 1
+
+  alpine:
+    build: ./alpine
+    privileged: true
+    labels:
+      io.balena.features.dbus: 1
+      io.balena.features.kernel-modules: 1
+
+  pulseaudio:
+    build: ./full
+    privileged: true
+    labels:
+      io.balena.features.dbus: 1
+      io.balena.features.kernel-modules: 1
