@@ -1,3 +1,0 @@
-FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine
-RUN install_packages pulseaudio pulseaudio-alsa alsa-plugins-pulse alsa-utils
-CMD [ "balena-idle" ]
