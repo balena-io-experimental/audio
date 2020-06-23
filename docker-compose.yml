@@ -10,6 +10,8 @@ services:
     privileged: true
     labels:
       io.balena.features.dbus: 1
+    ports:
+      - 4317:4317
     volumes:
       - 'pulse:/run/pulse'
 
