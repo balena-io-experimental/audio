@@ -11,7 +11,7 @@ ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 RUN install_packages pulseaudio pulseaudio-module-bluetooth
 
 # For local development
-#dev-cmd-run install_packages alsa-utils
+#dev-run=install_packages alsa-utils
 #dev-cmd-live=pulseaudio --use-pid-file=false --exit-idle-time=-1 --log-level=4 --file=/etc/pulse/primitive.pa || balena-idle
 
 COPY primitive.pa /etc/pulse/primitive.pa

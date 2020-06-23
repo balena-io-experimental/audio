@@ -19,13 +19,13 @@ services:
     build: ./bluetooth
     network_mode: host
     cap_add:
-      - NET_ADMIN    
+      - NET_ADMIN
     labels:
       io.balena.features.dbus: 1
 
   pulsetest:
     build: ./pulsetest
     labels:
-      io.balena.features.dbus: 1    
+      io.balena.features.dbus: 1
     volumes:
       - 'pulse:/run/pulse'
