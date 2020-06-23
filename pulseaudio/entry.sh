@@ -9,19 +9,23 @@ function pa_disable_module() {
   sed -i "s/load-module $MODULE/#load-module $MODULE/" /etc/pulse/default.pa
 }
 
+function pa_sanitize_log_level() {
+  declare -A options=(["ERROR"]=0 ["WARN"]=1 ["NOTICE"]=2 ["INFO"]=3 ["DEBUG"]=4)
+  if [[ "${options[$LOG_LEVEL]}" ]]; then
+    LOG_LEVEL=${options[$OUTPUT]}
+  fi
+}
+
 function alsa_select_output() {
   local OUTPUT="$1"
-  declare -A outputs=(["AUTO"]=0 ["HEADPHONES"]=1 ["HDMI0"]=2 ["HDMI1"]=3)
-  if [[ "${outputs[$OUTPUT]}" ]]; then
-    echo "Setting ALSA output to $OUTPUT"
-    amixer -c 0 cset numid=3 "${outputs[$OUTPUT]}"
-  else  
-    echo "Invalid ALSA output selected, falling back to defaults."
+  declare -A options=(["AUTO"]=0 ["HEADPHONES"]=1 ["HDMI0"]=2 ["HDMI1"]=3)
+  if [[ "${options[$OUTPUT]}" ]]; then
+    amixer -c 0 cset numid=3 "${options[$OUTPUT]}"
   fi
 }
 
 # Pulseaudio primitive environment variables and defaults
-LOG_LEVEL="${PULSE_LOG_LEVEL:-1}"
+LOG_LEVEL="${PULSE_LOG_LEVEL:-WARN}"
 AUDIO_OUTPUT="${ALSA_AUDIO_OUTPUT:-AUTO}"
 
 echo "--- Audio ---"
@@ -52,6 +56,7 @@ fi
 # - (exit-idle-time): Never terminate daemon when idle
 # - (file): Extend '/etc/pulse/default.pa' with '/etc/pulse/primitive.pa'
 if [[ "$1" == *"pulseaudio"* ]]; then
+  pa_sanitize_log_level
   shift
   set -- pulseaudio \
     --log-level="$LOG_LEVEL" \
