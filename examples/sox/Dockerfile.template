@@ -1,7 +1,7 @@
 FROM balenalib/%%BALENA_MACHINE_NAME%%-debian
 WORKDIR /usr/src
 
-ENV PULSE_SERVER=tcp:pulseaudio:4317
+ENV PULSE_SERVER=tcp:audio:4317
 ENV PULSE_SINK=alsa_output.default
 
 RUN install_packages sox libsox-fmt-pulse

@@ -5,8 +5,9 @@ volumes:
 
 services:
 
-  pulseaudio:
-    build: ./pulseaudio
+  # PulseAudio server
+  audio:
+    build: ./
     privileged: true
     labels:
       io.balena.features.dbus: 1
@@ -15,6 +16,7 @@ services:
     volumes:
       - 'pulse:/run/pulse'
 
+  # Bluetooth agent
   bluetooth:
     build: ./bluetooth
     network_mode: host
@@ -22,18 +24,19 @@ services:
       - NET_ADMIN
     labels:
       io.balena.features.dbus: 1
-
-  pulsetest:
-    build: ./pulsetest
-    volumes:
-      - 'pulse:/run/pulse'
   
-  # SOX using TCP sockets
+  # SOX using TCP socket
   sox:
     build: ./examples/sox
     
-  # MPlayer using UNIX sockets
+  # MPlayer using UNIX socket
   mplayer:
     build: ./examples/mplayer
+    volumes:
+      - 'pulse:/run/pulse'
+  
+  # nodejs using UNIX socket
+  nodejs:
+    build: ./examples/nodejs
     volumes:
       - 'pulse:/run/pulse'

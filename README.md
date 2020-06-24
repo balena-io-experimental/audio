@@ -19,7 +19,7 @@ To use this image, create a container in your `docker-compose.yml` file as shown
 version: '2'
 
 volumes:
-  pulse:                          # Only required if using PA over UNIX sockets
+  pulse:                          # Only required if using PA over UNIX socket
 
 services:
 
@@ -29,14 +29,14 @@ services:
     labels:
       io.balena.features.dbus: 1  # Only required for bluetooth support
     ports:
-      - 4317:4317                 # Only required if using PA over TCP sockets
+      - 4317:4317                 # Only required if using PA over TCP socket
     volumes:
-      - 'pulse:/run/pulse'        # Only required if using PA over UNIX sockets
+      - 'pulse:/run/pulse'        # Only required if using PA over UNIX socket
 
   my-audio-app:
     build: ./my-audio-app
     volumes:
-      - 'pulse:/run/pulse'        # Only required if using PA over UNIX sockets
+      - 'pulse:/run/pulse'        # Only required if using PA over UNIX socket
 ```
 
 #### Send/receive audio 
@@ -45,7 +45,7 @@ You can now send and receive audio from the `audio` container by setting the req
 
 | Environment variable | Description | Values |
 | --- | --- | --- |
-| `PULSE_SERVER` | Address of the PulseAudio server which you want to connect to. | UNIX sockets: `PULSE_SERVER=unix:/run/pulse/pulseaudio.socket`<br>TCP sockets: `PULSE_SERVER=tcp:audio:4317` |
+| `PULSE_SERVER` | Address of the PulseAudio server which you want to connect to. | UNIX socket: `PULSE_SERVER=unix:/run/pulse/pulseaudio.socket`<br>TCP socket: `PULSE_SERVER=tcp:audio:4317` |
 | `PULSE_SINK` | PulseAudio sink your application will send audio to. | Defaults to `PULSE_SINK=alsa_output.default` |
 | `PULSE_SOURCE` | PulseAudio source your application will get audio from. | --- |
 

@@ -1,0 +1,15 @@
+FROM balenalib/%%BALENA_MACHINE_NAME%%-node:10-stretch-run
+
+ENV PULSE_SERVER=unix:/run/pulse/pulseaudio.socket
+ENV PULSE_SINK=alsa_output.default
+
+WORKDIR /usr/src
+COPY . .
+
+# Install dependencies for pulseaudio2 node package
+RUN install_packages python pkg-config make g++ libpulse-dev
+RUN npm install
+RUN curl https://www.kozco.com/tech/LRMonoPhase4.wav --silent --output test.wav
+
+# Run: "node play.js" or "node echo.js"
+CMD [ "balena-idle" ]

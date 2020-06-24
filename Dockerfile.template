@@ -12,10 +12,12 @@ RUN install_packages pulseaudio pulseaudio-module-bluetooth
 
 # For local development
 #dev-run=install_packages alsa-utils
+#dev-run=curl https://www.kozco.com/tech/LRMonoPhase4.wav --silent --output test.wav
 #dev-cmd-live=pulseaudio --use-pid-file=false --exit-idle-time=-1 --log-level=4 --file=/etc/pulse/primitive.pa || balena-idle
 
 COPY primitive.pa /etc/pulse/primitive.pa
 COPY client.conf /etc/pulse/client.conf
 COPY entry.sh .
+
 ENTRYPOINT [ "/bin/bash", "/usr/src/entry.sh" ]
 CMD [ "pulseaudio" ]
