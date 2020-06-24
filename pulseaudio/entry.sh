@@ -20,13 +20,13 @@ function alsa_select_output() {
   local OUTPUT="$1"
   declare -A options=(["AUTO"]=0 ["HEADPHONES"]=1 ["HDMI0"]=2 ["HDMI1"]=3)
   if [[ "${options[$OUTPUT]}" ]]; then
-    amixer -c 0 cset numid=3 "${options[$OUTPUT]}"
+    amixer --card 0 --quiet cset numid=3 "${options[$OUTPUT]}"
   fi
 }
 
 # Pulseaudio primitive environment variables and defaults
-LOG_LEVEL="${PULSE_LOG_LEVEL:-WARN}"
-AUDIO_OUTPUT="${ALSA_AUDIO_OUTPUT:-AUTO}"
+LOG_LEVEL="${BALENA_AUDIO_LOG_LEVEL:-WARN}"
+AUDIO_OUTPUT="${BALENA_AUDIO_OUTPUT:-AUTO}"
 
 echo "--- Audio ---"
 echo "Starting audio service with settings:"
