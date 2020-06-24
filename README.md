@@ -85,6 +85,10 @@ COPY custom.pa /usr/src/custom.pa
 CMD [ "pulseaudio", "--file /usr/src/custom.pa", "--log-level=2" ]
 ```
 
+### Bluetooth
+
+Bluetooth support for PulseAudio is enabled out of the box. Note that this only provides the backend that routes bluetooth packets over to PulseAudio, this does not include the Bluetooth agent that's required for initiating a connection and pairing devices. Check out our [Bluetooth primitive]() for an easy to use Bluetooth agent.
+
 ## Supported devices
 The audio primitive has been tested to work on the following devices:
 

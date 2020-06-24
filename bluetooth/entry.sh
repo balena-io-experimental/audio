@@ -5,10 +5,10 @@ set -e
 /usr/bin/entry.sh echo "Running balena base image entrypoint..."
 
 # Bluetooth primitive environment variables and defaults
-DEVICE_NAME=${BLUETOOTH_DEVICE_NAME:-$(printf "balenaSound %s"$(hostname | cut -c -4))}
-HCI_INTERFACE=${BLUETOOTH_HCI_INTERFACE:-"hci0"}
-PAIRING_MODE=${BLUETOOTH_PAIRING_MODE:-"SSP"}
-PIN_CODE=${BLUETOOTH_PIN_CODE:-"0000"}
+DEVICE_NAME=${BALENA_BLUETOOTH_DEVICE_NAME:-$(printf "balenaSound %s"$(hostname | cut -c -4))}
+HCI_INTERFACE=${BALENA_BLUETOOTH_HCI_INTERFACE:-"hci0"}
+PAIRING_MODE=${BALENA_BLUETOOTH_PAIRING_MODE:-"SSP"}
+PIN_CODE=${BALENA_BLUETOOTH_PIN_CODE:-"0000"}
 
 echo "--- Bluetooth ---"
 echo "Starting bluetooth service with settings:"
