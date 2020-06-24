@@ -25,7 +25,15 @@ services:
 
   pulsetest:
     build: ./pulsetest
-    labels:
-      io.balena.features.dbus: 1
+    volumes:
+      - 'pulse:/run/pulse'
+  
+  # SOX using TCP sockets
+  sox:
+    build: ./examples/sox
+    
+  # MPlayer using UNIX sockets
+  mplayer:
+    build: ./examples/mplayer
     volumes:
       - 'pulse:/run/pulse'
