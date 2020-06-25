@@ -4,7 +4,7 @@
   "description": "Some nodejs scripts to test docker pulseaudio",
   "main": "echo.js",
   "dependencies": {
-    "pulseaudio2": "^0.2.2",
+    "pulseaudio2": "^0.3.1",
     "wav": "^1.0.2"
   },
   "devDependencies": {},
