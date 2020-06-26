@@ -39,9 +39,9 @@ services:
       - 'pulse:/run/pulse'        # Only required if using PA over UNIX socket
 ```
 
-#### Send/receive audio 
+#### Send/receive audio
 
-You can now send and receive audio from the `audio` container by setting the required PulseAudio environment variables in your client application, `my-audio-app` in the example above:
+These are the environment variables that you'll need to setup in order to configure your audio routes. Note that they must be set on your client container, where your audio application is running.
 
 | Environment variable | Description | Values |
 | --- | --- | --- |
@@ -49,12 +49,35 @@ You can now send and receive audio from the `audio` container by setting the req
 | `PULSE_SINK` | PulseAudio sink your application will send audio to. | Defaults to `PULSE_SINK=alsa_output.default` |
 | `PULSE_SOURCE` | PulseAudio source your application will get audio from. | --- |
 
-For this to work your application needs to support PulseAudio as an audio backend. Most applications do, however some might require installing additional packages as the PA integration is not distributed on the main binary. If your application does not have a PulseAudio backend you can use ALSA backend and bridge it over to PulseAudio. See [ALSA bridge]() for more details.
+Setting these environment variables will instruct your application to route audio to the PulseAudio server on the `audio` container. For this to work your application must have built-in support for  PulseAudio as an audio backend. Most applications do, though some might require installing or configuring additional packages. If your application does not have native support for the PulseAudio backend you'll need to use your container's ALSA backend to bridge over to PulseAudio.
 
-We've included some client application examples in the `examples` folder in this repository (along with the `docker-compose.yml` file). 
-Here is a non exhaustive list of applications with PulseAudio backend that have been tested to work, feel free to PR more: 
-- [SoX](http://sox.sourceforge.net/)
-- [MPlayer](http://www.mplayerhq.hu/)
+Read on for details on both alternatives. We've also included some examples in the `examples` folder (along with the `docker-compose.yml` file) so be sure to check that as well for implementation details.
+
+**PulseAudio backend**
+For applications with PulseAudio support, the audio will be routed as follows: 
+
+`[client-container] audio-app --> [audio] PulseAudio --> [audio] ALSA --> Audio Hardware`
+
+Here is a non-exhaustive list of applications with PulseAudio backend that have been tested to work, feel free to PR more: 
+- [SoX](http://sox.sourceforge.net/): PA backend distributed via `libsox-fmt-pulse` package
+- [MPlayer](http://www.mplayerhq.hu/): Native PA backend
+
+**ALSA bridge**
+For audio applications that don't have built-in PulseAudio support we will be using ALSA to brige the gap:
+
+`[client-container] audio-app --> [client-container] ALSA --> [audio] PulseAudio --> [audio] ALSA --> Audio Hardware`
+
+Setting up the ALSA bridge requires some extra configuration steps on your containers, so we created a few bash scripts to simplify the process:
+
+- [Debian](scripts/alsa-bridge/debian-setup.sh)
+- [Alpine]() 
+
+You should run this script before making use of audio capabilities, you can easily do so by including the following instruction in your `Dockerfile`:
+
+```Dockerfile
+RUN curl --silent https://raw.githubusercontent.com/balena-io-playground/audio-primitive/master/scripts/alsa-bridge/debian-setup.sh | sh
+```
+
 
 ## Customization
 ### Environment variables
@@ -99,5 +122,3 @@ The audio primitive has been tested to work on the following devices:
 | Raspberry Pi 3 | ✔ |
 | Raspberry Pi 4 | ✔ |
 | Intel NUC |  |
-
-## TODO: ALSA bridge
