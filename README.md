@@ -54,6 +54,7 @@ Setting these environment variables will instruct your application to route audi
 Read on for details on both alternatives. We've also included some examples in the `examples` folder (along with the `docker-compose.yml` file) so be sure to check that as well for implementation details.
 
 **PulseAudio backend**
+
 For applications with PulseAudio support, the audio will be routed as follows: 
 
 `[client-container] audio-app --> [audio] PulseAudio --> [audio] ALSA --> Audio Hardware`
@@ -63,6 +64,7 @@ Here is a non-exhaustive list of applications with PulseAudio backend that have 
 - [MPlayer](http://www.mplayerhq.hu/): Native PA backend
 
 **ALSA bridge**
+
 For audio applications that don't have built-in PulseAudio support we will be using ALSA to brige the gap:
 
 `[client-container] audio-app --> [client-container] ALSA --> [audio] PulseAudio --> [audio] ALSA --> Audio Hardware`
