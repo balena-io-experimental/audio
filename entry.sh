@@ -17,6 +17,21 @@ function pa_sanitize_log_level() {
   fi
 }
 
+function pa_set_cookie() {
+  local PA_COOKIE="$1"
+  if [[ ${#PA_COOKIE} == 512 && "$PA_COOKIE" =~ ^[0-9A-Fa-f]{1,}$ ]]; then
+    echo "$PA_COOKIE" | xxd -r -p | tee /run/pulse/pulseaudio.cookie > /dev/null
+  fi
+}
+
+function pa_read_cookie () {
+  if [[ -f /run/pulse/pulseaudio.cookie ]]; then
+    xxd -c 512 -p /run/pulse/pulseaudio.cookie
+  else
+    echo
+  fi
+}
+
 function alsa_select_output() {
   local OUTPUT="$1"
   declare -A options=(["AUTO"]=0 ["HEADPHONES"]=1 ["HDMI0"]=2 ["HDMI1"]=3)
@@ -25,33 +40,40 @@ function alsa_select_output() {
   fi
 }
 
-# Pulseaudio primitive environment variables and defaults
+# PulseAudio primitive environment variables and defaults
 LOG_LEVEL="${BALENA_AUDIO_LOG_LEVEL:-WARN}"
 AUDIO_OUTPUT="${BALENA_AUDIO_OUTPUT:-AUTO}"
+COOKIE="${BALENA_AUDIO_COOKIE}"
 
 echo "--- Audio ---"
 echo "Starting audio service with settings:"
 echo "- Pulse log level: "$LOG_LEVEL
+[[ -n ${COOKIE} ]] && echo "- Pulse cookie: "$COOKIE
 echo "- ALSA output: "$AUDIO_OUTPUT
 
-# Disable pulseaudio modules that we don't support
+# Disable PulseAudio modules that we don't support
 pa_disable_module module-console-kit
 
-# Disable pulseaudio modules that need special configuration
+# Disable PulseAudio modules that need special configuration
 # These will be loaded and configured by the primitive.pa config file
 pa_disable_module module-bluetooth-discover
 pa_disable_module module-bluetooth-policy
 pa_disable_module module-native-protocol-unix
 
+# Set PulseAudio cookie
+if [[ -n "$COOKIE" ]]; then
+  pa_set_cookie "$COOKIE"
+fi
+
 # Select ALSA default output
 alsa_select_output "$AUDIO_OUTPUT"
 
-# If command starts with an option, prepend pulseaudio to it
+# If command starts with an option, prepend PulseAudio to it
 if [[ "${1#-}" != "$1" ]]; then
   set -- pulseaudio "$@"
 fi
 
-# Set pulseaudio default flags if we are running it
+# Set PulseAudio default flags if we are running it
 # - (realtime, high-priority): Ensure we always have enough CPU
 # - (use-pid-file): Disable PID file as it may cause bad restarts due to locked files
 # - (exit-idle-time): Never terminate daemon when idle

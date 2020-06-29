@@ -8,7 +8,7 @@ ENV UDEV=off
 # DBUS is required for module-bluetooth-discover
 ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 
-RUN install_packages pulseaudio pulseaudio-module-bluetooth
+RUN install_packages pulseaudio pulseaudio-module-bluetooth xxd
 
 # For local development
 #dev-run=install_packages alsa-utils
