@@ -8,7 +8,7 @@ This image runs a [PulseAudio](https://www.freedesktop.org/wiki/Software/PulseAu
 - PulseAudio configuration optimized for balenaOS, extendable via PA config files
 - Supports both TCP and UNIX socket communication
 - Bluetooth and ALSA support out of the box
-- Companion API to send PA commands and handle events
+- Companion library to send PA commands and handle events using JavaScript
 
 ## Usage
 
@@ -82,18 +82,9 @@ RUN curl --silent https://raw.githubusercontent.com/balena-io-playground/audio-p
 
 
 ## Customization
-### Environment variables
-
-| Environment variable | Description | Options | Default |
-| --- | --- | --- | --- |
-| `BALENA_AUDIO_LOG_LEVEL` | PulseAudio log level. | `ERROR`, `WARN`, `NOTICE`, `INFO`, `DEBUG`. | `WARN` |
-| `BALENA_AUDIO_OUTPUT` | ALSA output selector for Raspberry Pi boards. <br> Note that:<br>- `AUTO` will automatically detect and switch between `HEADPHONES` and `HDMI0`, but will ignore `HDMI1`.<br>- `HDMI1` is only available for Raspberry Pi 4. | `AUTO`, `HEADPHONES`, `HDMI0`, `HDMI1`. | `AUTO` |
-
-
 ### Extend image configuration
 
-You can extend the `audio` primitive to include custom configuration as you would with any other `Dockerfile`.
-For example, you can pass a flag to the PulseAudio server:
+You can extend the `audio` primitive to include custom configuration as you would with any other `Dockerfile`. For example, you can pass a flag to the PulseAudio server:
 
 ```Dockerfile
 FROM balenalabs/%%BALENA_MACHINE_NAME%%-audio
@@ -107,8 +98,33 @@ Or add custom configuration files:
 FROM balenalabs/%%BALENA_MACHINE_NAME%%-audio
 
 COPY custom.pa /usr/src/custom.pa
-CMD [ "pulseaudio", "--file /usr/src/custom.pa", "--log-level=2" ]
+CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
 ```
+
+### Environment variables
+
+The following environment variables allow some degree of configuration:
+
+| Environment variable | Description | Options | Default |
+| --- | --- | --- | --- |
+| `BALENA_AUDIO_LOG_LEVEL` | PulseAudio log level. | `ERROR`, `WARN`, `NOTICE`, `INFO`, `DEBUG`. | `WARN` |
+| `BALENA_AUDIO_OUTPUT` | ALSA output selector for Raspberry Pi boards. <br> Note that:<br>- `AUTO` will automatically detect and switch between `HEADPHONES` and `HDMI0`, but will ignore `HDMI1`.<br>- `HDMI1` is only available for Raspberry Pi 4. | `AUTO`, `HEADPHONES`, `HDMI0`, `HDMI1`. | `AUTO` |
+
+### Companion library
+
+If you need to manipulate the primitive's behaviour at runtime you can connect to the PulseAudio server, send commands and receive data or events from it. You should be able to use any existing library that implements the PA client protocol over TCP/UNIX sockets (some examples: [Python](https://pypi.org/project/pulsectl/), [Rust](https://docs.rs/libpulse-binding/2.16.0/libpulse_binding/), [JavaScript](https://github.com/stanford-oval/node-pulseaudio#readme)), or you could even [write your own](https://freedesktop.org/software/pulseaudio/doxygen/). Libraries that manipulate PA over DBUS won't work because we don't run the pulse dbus daemon. 
+
+On this note, we built a companion javascript library that exposes the most common use cases with an easy to use interface. Install it with: 
+```npm install @balenalabs/audio-primitive``` (**Note**: Not published yet, you can find it in this repo at the `lib` folder). 
+
+Currently this is the exposed API (more to come), checkout `lib/example` for a fully fledged example:
+
+Class `BalenaAudio`:
+* constructor(address, cookie, subToEvents, name): 
+* start(): Connect to the primitive
+* setVolume(vol): Set the volume. `vol` in %.
+* getVolume(): Gets the current sink volume in %.
+* events: Listen to `play` and `stop` events.
 
 ### Bluetooth
 
@@ -124,3 +140,5 @@ The audio primitive has been tested to work on the following devices:
 | Raspberry Pi 3 | ✔ |
 | Raspberry Pi 4 | ✔ |
 | Intel NUC |  |
+
+
