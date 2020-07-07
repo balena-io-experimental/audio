@@ -24,7 +24,7 @@ volumes:
 services:
 
   audio:
-    image: balenalabs/raspberrypi4-64-audio:latest  # See supported devices for other archs
+    image: balenaplayground/balenalabs-audio:raspberrypi4-64  # See supported devices for other archs
     privileged: true
     labels:
       io.balena.features.dbus: 1  # Only required for bluetooth support
@@ -87,7 +87,7 @@ RUN curl --silent https://raw.githubusercontent.com/balena-io-playground/audio-p
 You can extend the `audio` primitive to include custom configuration as you would with any other `Dockerfile`. For example, you can pass a flag to the PulseAudio server:
 
 ```Dockerfile
-FROM balenalabs/%%BALENA_MACHINE_NAME%%-audio
+FROM balenaplayground/balenalabs-audio:%%BALENA_MACHINE_NAME%%
 
 CMD [ "--disallow-module-loading" ]
 ```
@@ -95,7 +95,7 @@ CMD [ "--disallow-module-loading" ]
 Or add custom configuration files:
 
 ```Dockerfile
-FROM balenalabs/%%BALENA_MACHINE_NAME%%-audio
+FROM balenaplayground/balenalabs-audio:%%BALENA_MACHINE_NAME%%
 
 COPY custom.pa /usr/src/custom.pa
 CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
