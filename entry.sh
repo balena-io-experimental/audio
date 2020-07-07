@@ -13,7 +13,7 @@ function pa_disable_module() {
 function pa_sanitize_log_level() {
   declare -A options=(["ERROR"]=0 ["WARN"]=1 ["NOTICE"]=2 ["INFO"]=3 ["DEBUG"]=4)
   if [[ "${options[$LOG_LEVEL]}" ]]; then
-    LOG_LEVEL=${options[$OUTPUT]}
+    LOG_LEVEL=${options[$LOG_LEVEL]}
   fi
 }
 
