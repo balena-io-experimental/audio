@@ -1,7 +1,7 @@
 # balena audio primitive
 
 Provides an easy way to work with audio applications in a containerized environment.
-This image runs a [PulseAudio](https://www.freedesktop.org/wiki/Software/PulseAudio/) server optimized for balenaOS.
+The `audio` primitive is a docker image that runs a [PulseAudio](https://www.freedesktop.org/wiki/Software/PulseAudio/) server optimized for balenaOS.
 
 ## Features
 
@@ -41,13 +41,13 @@ services:
 
 #### Send/receive audio
 
-These are the environment variables that you'll need to setup in order to configure your audio routes. Note that they must be set on your client container, where your audio application is running.
+In order to route audio through the `audio` primitive there are a few environment variables you'll need to set. Note that they must be set on your client container, where your audio application is running and **not** on the primitive itself. We recommend setting them in the `Dockerfile`. 
 
-| Environment variable | Description | Values |
-| --- | --- | --- |
-| `PULSE_SERVER` | Address of the PulseAudio server which you want to connect to. | UNIX socket: `PULSE_SERVER=unix:/run/pulse/pulseaudio.socket`<br>TCP socket: `PULSE_SERVER=tcp:audio:4317` |
-| `PULSE_SINK` | PulseAudio sink your application will send audio to. | Defaults to `PULSE_SINK=alsa_output.default` |
-| `PULSE_SOURCE` | PulseAudio source your application will get audio from. | --- |
+| Environment variable | Description |
+| --- | --- |
+| `PULSE_SERVER` | **Required** Address of the PulseAudio server which you want to connect to. Depending on the communication protocol you want to use it can be: <br>- *UNIX socket*: `PULSE_SERVER=unix:/run/pulse/pulseaudio.socket`<br>- *TCP socket*: `PULSE_SERVER=tcp:audio:4317` |
+| `PULSE_SINK` | **Optional** The PulseAudio sink your application will send audio to. If not set, the primitive will use the PulseAudio default sink. Unless you are building a complex audio application we don't recommend setting this variable. If you want to select which output to use, for example HDMI or audio jack for a Raspberry Pi use the `BALENA_AUDIO_OUTPUT` [env var](#environment-variables) on the primitive to select the output device.  |
+| `PULSE_SOURCE` | **Optional** The PulseAudio source your application will get audio from. |
 
 Setting these environment variables will instruct your application to route audio to the PulseAudio server on the `audio` container. For this to work your application must have built-in support for  PulseAudio as an audio backend. Most applications do, though some might require installing or configuring additional packages. If your application does not have native support for the PulseAudio backend you'll need to use your container's ALSA backend to bridge over to PulseAudio.
 
@@ -55,7 +55,7 @@ Read on for details on both alternatives. We've also included some examples in t
 
 **PulseAudio backend**
 
-For applications with PulseAudio support, the audio will be routed as follows: 
+For applications with PulseAudio support, the audio is routed as follows: 
 
 `[client-container] audio-app --> [audio] PulseAudio --> [audio] ALSA --> Audio Hardware`
 
@@ -65,16 +65,16 @@ Here is a non-exhaustive list of applications with PulseAudio backend that have 
 
 **ALSA bridge**
 
-For audio applications that don't have built-in PulseAudio support we will be using ALSA to brige the gap:
+For audio applications that don't have built-in PulseAudio support you can use ALSA to brige the gap:
 
 `[client-container] audio-app --> [client-container] ALSA --> [audio] PulseAudio --> [audio] ALSA --> Audio Hardware`
 
-Setting up the ALSA bridge requires some extra configuration steps on your containers, so we created a few bash scripts to simplify the process:
+Setting up the ALSA bridge requires extra configuration steps on your containers so we created a few bash scripts to simplify the process:
 
 - [Debian](scripts/alsa-bridge/debian-setup.sh)
 - [Alpine]() 
 
-You should run this script before making use of audio capabilities, you can easily do so by including the following instruction in your `Dockerfile`:
+Before making use of audio capabilities you should run this script. An easy way to do so is by including the following instruction in your `Dockerfile`:
 
 ```Dockerfile
 RUN curl --silent https://raw.githubusercontent.com/balena-io-playground/audio-primitive/master/scripts/alsa-bridge/debian-setup.sh | sh
@@ -105,10 +105,10 @@ CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
 
 The following environment variables allow some degree of configuration:
 
-| Environment variable | Description | Options | Default |
+| Environment variable | Description | Default | Options | 
 | --- | --- | --- | --- |
-| `BALENA_AUDIO_LOG_LEVEL` | PulseAudio log level. | `ERROR`, `WARN`, `NOTICE`, `INFO`, `DEBUG`. | `WARN` |
-| `BALENA_AUDIO_OUTPUT` | ALSA output selector for Raspberry Pi boards. <br> Note that:<br>- `AUTO` will automatically detect and switch between `HEADPHONES` and `HDMI0`, but will ignore `HDMI1`.<br>- `HDMI1` is only available for Raspberry Pi 4. | `AUTO`, `HEADPHONES`, `HDMI0`, `HDMI1`. | `AUTO` |
+| `BALENA_AUDIO_LOG_LEVEL` | PulseAudio log level. | `WARN` | `ERROR`, `WARN`, `NOTICE`, `INFO`, `DEBUG`. |
+| `BALENA_AUDIO_OUTPUT` | Select the default audio output device. <br>Can also be changed at runtime by using the [companion library](#companion-library) | `AUTO` | For all device types: <br>- `AUTO`: Let PulseAudio decide. Usually it's `USB > DAC > ON-BOARD`<br>- `DAC`: Any attached GPIO based DACs<br>- `<PULSE_SINK_NAME>`: If you know the sink name you can set it too <br><br> For Raspberry Pi devices: <br>- `RPI_AUTO`: Official BCM2835 automatic audio switching as described [here](https://www.raspberrypi.org/documentation/configuration/audio-config.md) <br>- `RPI_HEADPHONES`: 3.5mm audio jack <br>- `RPI_HDMI0`: Main HDMI port <br>- `RPI_HDMI1`: Secondary HDMI port (only Raspberry Pi 4) |
 
 ### Companion library
 
@@ -125,10 +125,13 @@ Class `BalenaAudio`:
 * setVolume(vol): Set the volume. `vol` in %.
 * getVolume(): Gets the current sink volume in %.
 * events: Listen to `play` and `stop` events.
+* [WIP] setDefaultSink(): Set the default sink
+* [WIP] getDefaultSink(): Get the default sink
+* [WIP] getSinks(): Get available sinks
 
 ### Bluetooth
 
-Bluetooth support for PulseAudio is enabled out of the box. Note that this only provides the backend that routes bluetooth packets over to PulseAudio, this does not include the Bluetooth agent that's required for initiating a connection and pairing devices. Check out our [Bluetooth primitive]() for an easy to use Bluetooth agent.
+Bluetooth support for PulseAudio is enabled out of the box. Note that this only provides the backend that routes bluetooth packets over to PulseAudio, this does not include the Bluetooth agent that's required for initiating a connection and pairing devices. Check out our [Bluetooth primitive](https://github.com/balena-io-playground/bluetooth-primitive) for an easy to use Bluetooth agent.
 
 ## Supported devices
 The audio primitive has been tested to work on the following devices:

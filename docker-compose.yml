@@ -18,7 +18,7 @@ services:
 
   # Bluetooth agent
   bluetooth:
-    build: ./bluetooth
+    image: balenaplayground/balenalabs-bluetooth:raspberrypi4-64
     network_mode: host
     cap_add:
       - NET_ADMIN
