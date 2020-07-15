@@ -87,11 +87,13 @@ function pa_set_default_output () {
 
 # Platform specific commands to initialize audio hardware
 function init_audio_hardware () {
+  # Allow hardware to be initialized, PulseAudio only creates cards/sinks/sources on startup
+  sleep 10
+
   # Intel NUC
   HDA_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
   if [[ -n "$HDA_CARD" ]]; then
     echo "Initializing Intel NUC audio hardware..."
-    sleep 5 # Allow hardware to be initialized, otherwise PulseAudio will think there is none
     amixer --card hda-intel --quiet cset numid=2 on,on  # Master Playback Switch --> turn on hardware
     amixer --card hda-intel --quiet cset numid=1 87,87  # Master Playback Volume --> max volume
     PA_SINK="alsa_output.hda-intel.analog-stereo"
@@ -103,7 +105,7 @@ function print_audio_cards () {
 }
 
 # PulseAudio primitive environment variables and defaults
-LOG_LEVEL="${AUDIO_LOG_LEVEL:-DEBUG}"
+LOG_LEVEL="${AUDIO_LOG_LEVEL:-NOTICE}"
 DEFAULT_OUTPUT="${AUDIO_OUTPUT:-AUTO}"
 COOKIE="${AUDIO_PULSE_COOKIE}"
 
