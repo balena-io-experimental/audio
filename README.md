@@ -108,7 +108,7 @@ The following environment variables allow some degree of configuration:
 | Environment variable | Description | Default | Options | 
 | --- | --- | --- | --- |
 | `BALENA_AUDIO_LOG_LEVEL` | PulseAudio log level. | `WARN` | `ERROR`, `WARN`, `NOTICE`, `INFO`, `DEBUG`. |
-| `BALENA_AUDIO_OUTPUT` | Select the default audio output device. <br>Can also be changed at runtime by using the [companion library](#companion-library) | `AUTO` | For all device types: <br>- `AUTO`: Let PulseAudio decide. Usually it's `USB > DAC > ON-BOARD`<br>- `DAC`: Any attached GPIO based DACs<br>- `<PULSE_SINK_NAME>`: If you know the sink name you can set it too <br><br> For Raspberry Pi devices: <br>- `RPI_AUTO`: Official BCM2835 automatic audio switching as described [here](https://www.raspberrypi.org/documentation/configuration/audio-config.md) <br>- `RPI_HEADPHONES`: 3.5mm audio jack <br>- `RPI_HDMI0`: Main HDMI port <br>- `RPI_HDMI1`: Secondary HDMI port (only Raspberry Pi 4) |
+| `BALENA_AUDIO_OUTPUT` | Select the default audio output device. <br>Can also be changed at runtime by using the [companion library](#companion-library) | `AUTO` | For all device types: <br>- `AUTO`: Let PulseAudio decide. Priority is `USB > DAC > HEADPHONES > HDMI`<br>- `DAC`: Force default output to be an attached GPIO based DAC<br>- `<PULSE_SINK_NAME>`: If you know the sink name you can force set it too <br><br> For Raspberry Pi devices: <br>- `RPI_AUTO`: Official BCM2835 automatic audio switching as described [here](https://www.raspberrypi.org/documentation/configuration/audio-config.md) <br>- `RPI_HEADPHONES`: 3.5mm audio jack <br>- `RPI_HDMI0`: Main HDMI port <br>- `RPI_HDMI1`: Secondary HDMI port (only Raspberry Pi 4) <br><br> For Intel NUC: <br>- NUCs have automatic output detection and switching. If you plug both the HDMI and the 3.5mm audio jack it will use the latter.  |
 
 ### Companion library
 
@@ -142,6 +142,6 @@ The audio primitive has been tested to work on the following devices:
 | Raspberry Pi 2 |  |
 | Raspberry Pi 3 | ✔ |
 | Raspberry Pi 4 | ✔ |
-| Intel NUC |  |
+| Intel NUC | ✔ |
 
 

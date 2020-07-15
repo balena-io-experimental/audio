@@ -2,7 +2,7 @@
 set -e
 
 # Run balena base image entrypoint script
-/usr/bin/entry.sh echo "Running balena base image entrypoint..."
+/usr/bin/entry.sh echo ""
 
 # Helper functions
 function pa_disable_module() {
@@ -32,7 +32,7 @@ function pa_read_cookie () {
   fi
 }
 
-function set_default_output () {
+function pa_set_default_output () {
   local OUTPUT="$1"
   local PA_SINK=""
 
@@ -48,22 +48,22 @@ function set_default_output () {
 
   case "${options[$OUTPUT]}" in
 
-    # RPi familiy - Set PCM Route and set PA preset sink
+    # RPi familiy
     ${options["RPI_AUTO"]} | ${options["RPI_HEADPHONES"]} | ${options["RPI_HDMI0"]} | ${options["RPI_HDMI1"]})
-      BCM2835_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/bcm2835/ && NR%2==1 {gsub(/ /, "", $0); print $1}')
+      BCM2835_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/bcm2835/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
       if [[ -n "$BCM2835_CARD" ]]; then
-        amixer --card "$BCM2835_CARD" --quiet cset numid=3 "${options[$OUTPUT]}"
-        PA_SINK="alsa_output.$BCM2835_CARD.stereo-fallback"
+        amixer --card bcm2835 --quiet cset numid=3 "${options[$OUTPUT]}"
+        PA_SINK="alsa_output.bcm2835.stereo-fallback"
       else
         echo "WARNING: BCM2835 audio card not found, are you sure you are running on a Raspberry Pi?"
       fi
       ;;
 
-    # DACs - We prioritize audio cards with DAC on their name
+    # DACs
     ${options["DAC"]})
-      DAC_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/dac|DAC|Dac/ && NR%2==1 {gsub(/ /, "", $0); print $1}')
+      DAC_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/dac|DAC|Dac/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
       if [[ -n "$DAC_CARD" ]]; then
-        PA_SINK="alsa_output.$DAC_CARD.stereo-fallback"
+        PA_SINK="alsa_output.dac.stereo-fallback"
       else
         echo "WARNING: No DAC found. Falling back to PulseAudio defaults."
       fi
@@ -79,9 +79,22 @@ function set_default_output () {
       ;;
   esac
 
-  # 
+  # Set the PA sink name
   if [[ -n "$PA_SINK" ]]; then
     echo "set-default-sink $PA_SINK" >> /etc/pulse/primitive.pa
+  fi
+}
+
+# Platform specific commands to initialize audio hardware
+function init_audio_hardware () {
+  # Intel NUC
+  HDA_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
+  if [[ -n "$HDA_CARD" ]]; then
+    echo "Initializing Intel NUC audio hardware..."
+    sleep 5 # Allow hardware to be initialized, otherwise PulseAudio will think there is none
+    amixer --card hda-intel --quiet cset numid=2 on,on  # Master Playback Switch --> turn on hardware
+    amixer --card hda-intel --quiet cset numid=1 87,87  # Master Playback Volume --> max volume
+    PA_SINK="alsa_output.hda-intel.analog-stereo"
   fi
 }
 
@@ -90,9 +103,9 @@ function print_audio_cards () {
 }
 
 # PulseAudio primitive environment variables and defaults
-LOG_LEVEL="${BALENA_AUDIO_LOG_LEVEL:-WARN}"
-DEFAULT_OUTPUT="${BALENA_AUDIO_OUTPUT:-AUTO}"
-COOKIE="${BALENA_AUDIO_PULSE_COOKIE}"
+LOG_LEVEL="${AUDIO_LOG_LEVEL:-DEBUG}"
+DEFAULT_OUTPUT="${AUDIO_OUTPUT:-AUTO}"
+COOKIE="${AUDIO_PULSE_COOKIE}"
 
 echo "--- Audio ---"
 echo "Starting audio service with settings:"
@@ -101,6 +114,11 @@ echo "- Pulse log level: "$LOG_LEVEL
 echo "- Default output: "$DEFAULT_OUTPUT
 echo -e "\nDetected audio cards:"
 print_audio_cards
+echo -e "\n"
+
+# Configure audio hardware
+init_audio_hardware
+pa_set_default_output "$DEFAULT_OUTPUT"
 
 # Disable PulseAudio modules that we don't support
 pa_disable_module module-console-kit
@@ -115,9 +133,6 @@ pa_disable_module module-native-protocol-unix
 if [[ -n "$COOKIE" ]]; then
   pa_set_cookie "$COOKIE"
 fi
-
-# Select default output
-set_default_output "$DEFAULT_OUTPUT"
 
 # If command starts with an option, prepend PulseAudio to it
 if [[ "${1#-}" != "$1" ]]; then

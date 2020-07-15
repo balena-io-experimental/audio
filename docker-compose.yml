@@ -16,16 +16,16 @@ services:
     volumes:
       - 'pulse:/run/pulse'
 
+  # EXAMPLES
   # Bluetooth agent
   bluetooth:
-    image: balenaplayground/balenalabs-bluetooth:raspberrypi4-64
+    build: ./examples/bluetooth
     network_mode: host
     cap_add:
       - NET_ADMIN
     labels:
       io.balena.features.dbus: 1
   
-  ### EXAMPLES
   # SOX example using TCP socket
   sox:
     build: ./examples/sox
