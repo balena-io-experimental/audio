@@ -1,3 +1,6 @@
+# Load default PulseAudio configuration
+.include /etc/pulse/default.pa
+
 # Load server protocols for clients
 load-module module-native-protocol-unix auth-anonymous=true auth-cookie=/run/pulse/pulseaudio.cookie socket=/run/pulse/pulseaudio.socket
 load-module module-native-protocol-tcp auth-anonymous=true auth-cookie=/run/pulse/pulseaudio.cookie port=4317

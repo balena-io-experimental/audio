@@ -10,8 +10,7 @@ ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 RUN install_packages pulseaudio pulseaudio-module-bluetooth xxd alsa-utils
 
 # For local development
-#dev-run=curl https://www.kozco.com/tech/LRMonoPhase4.wav --silent --output test.wav
-#dev-cmd-live=pulseaudio --log-level=debug --file=/etc/pulse/primitive.pa || balena-idle
+#dev-cmd-live=pulseaudio || balena-idle
 
 COPY entry.sh .
 COPY primitive.pa /etc/pulse/primitive.pa

@@ -10,10 +10,12 @@ function pa_disable_module() {
   sed -i "s/load-module $MODULE/#load-module $MODULE/" /etc/pulse/default.pa
 }
 
-function pa_sanitize_log_level() {
+function pa_set_log_level() {
+  local PA_LOG_LEVEL="$1"
   declare -A options=(["ERROR"]=0 ["WARN"]=1 ["NOTICE"]=2 ["INFO"]=3 ["DEBUG"]=4)
-  if [[ "${options[$LOG_LEVEL]}" ]]; then
-    LOG_LEVEL=${options[$LOG_LEVEL]}
+  if [[ "${options[$PA_LOG_LEVEL]}" ]]; then
+    LOWER_LOG_LEVEL=$(echo "$PA_LOG_LEVEL" | tr '[:upper:]' '[:lower:]')
+    sed -i "s/log-level = notice/log-level = $LOWER_LOG_LEVEL/g" /etc/pulse/daemon.conf
   fi
 }
 
@@ -131,6 +133,8 @@ pa_disable_module module-bluetooth-discover
 pa_disable_module module-bluetooth-policy
 pa_disable_module module-native-protocol-unix
 
+pa_set_log_level "$LOG_LEVEL"
+
 # Set PulseAudio cookie
 if [[ -n "$COOKIE" ]]; then
   pa_set_cookie "$COOKIE"
@@ -139,19 +143,6 @@ fi
 # If command starts with an option, prepend PulseAudio to it
 if [[ "${1#-}" != "$1" ]]; then
   set -- pulseaudio "$@"
-fi
-
-# PulseAudio default flags set in daemon.conf
-# - (realtime): Ensure we always have enough CPU
-# - (file): Extend '/etc/pulse/default.pa' with '/etc/pulse/primitive.pa'
-if [[ "$1" == *"pulseaudio"* ]]; then
-  pa_sanitize_log_level
-  shift
-  set -- pulseaudio \
-    --log-level="$LOG_LEVEL" \
-    --realtime=true \
-    --file=/etc/pulse/primitive.pa \
-    "$@"
 fi
 
 exec "$@"

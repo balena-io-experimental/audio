@@ -84,7 +84,11 @@ RUN curl --silent https://raw.githubusercontent.com/balena-io-playground/audio-p
 ## Customization
 ### Extend image configuration
 
-You can extend the `audio` primitive to include custom configuration as you would with any other `Dockerfile`. For example, you can pass a flag to the PulseAudio server:
+You can extend the `audio` primitive to include custom configuration as you would with any other `Dockerfile`. Just make sure you don't override the `ENTRYPOINT` as it contains important system configuration.
+
+Here are some of the most common extension cases: 
+
+- Pass a flag to the PulseAudio server:
 
 ```Dockerfile
 FROM balenaplayground/balenalabs-audio:%%BALENA_MACHINE_NAME%%
@@ -92,13 +96,23 @@ FROM balenaplayground/balenalabs-audio:%%BALENA_MACHINE_NAME%%
 CMD [ "--disallow-module-loading" ]
 ```
 
-Or add custom configuration files:
+- Add custom configuration files:
 
 ```Dockerfile
 FROM balenaplayground/balenalabs-audio:%%BALENA_MACHINE_NAME%%
 
 COPY custom.pa /usr/src/custom.pa
 CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
+```
+
+- Start PulseAudio from your own bash script:
+
+```Dockerfile
+FROM balenaplayground/balenalabs-audio:%%BALENA_MACHINE_NAME%%
+
+COPY custom.pa /usr/src/custom.pa
+COPY start.sh /usr/src/start.sh
+CMD [ "/bin/bash", "/usr/src/start.sh" ]
 ```
 
 ### Environment variables
