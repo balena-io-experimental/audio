@@ -72,7 +72,7 @@ For audio applications that don't have built-in PulseAudio support you can use A
 Setting up the ALSA bridge requires extra configuration steps on your containers so we created a few bash scripts to simplify the process:
 
 - [Debian](scripts/alsa-bridge/debian-setup.sh)
-- [Alpine]() 
+- [Alpine](scripts/alsa-bridge/alpine-setup.sh) 
 
 Before making use of audio capabilities you should run this script. An easy way to do so is by including the following instruction in your `Dockerfile`:
 
