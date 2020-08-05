@@ -81,7 +81,8 @@ function pa_set_default_output () {
       ;;
   esac
 
-  # Set the PA sink name
+  # Set the sink name as PA default and save it in a temp file
+  echo "$PA_SINK" > /run/pulse/pulseaudio.sink
   if [[ -n "$PA_SINK" ]]; then
     echo "set-default-sink $PA_SINK" >> /etc/pulse/primitive.pa
   fi
@@ -113,9 +114,9 @@ COOKIE="${AUDIO_PULSE_COOKIE}"
 
 echo "--- Audio ---"
 echo "Starting audio service with settings:"
-echo "- Pulse log level: "$LOG_LEVEL
-[[ -n ${COOKIE} ]] && echo "- Pulse cookie: "$COOKIE
-echo "- Default output: "$DEFAULT_OUTPUT
+echo "- Pulse log level: $LOG_LEVEL"
+[[ -n ${COOKIE} ]] && echo "- Pulse cookie: $COOKIE"
+echo "- Default output: $DEFAULT_OUTPUT"
 echo -e "\nDetected audio cards:"
 print_audio_cards
 echo -e "\n"
