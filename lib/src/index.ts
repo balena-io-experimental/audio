@@ -11,14 +11,14 @@ export default class BalenaAudio extends PAClient {
   public defaultSink: string
   constructor(
     public address: string = 'tcp:audio:4317',
-    public cookie: string = './cookie',
+    public cookie: string = '/run/pulse/pulseaudio.cookie',
     public subToEvents: boolean = true,
     public name: string = 'BalenaAudio'
   ) {
     super(address, cookie)
   }
 
-  async start(): Promise<BalenaAudioInfo> {
+  async listen(): Promise<BalenaAudioInfo> {
     const protocol: AuthInfo = await this.connect()
     const client: ClientInfo = await this.setClientName(this.name)
     const server: ServerInfo = await this.getServerInfo()

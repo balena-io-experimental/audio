@@ -1,7 +1,7 @@
 {
-  "name": "@balenalabs/audio-primitive",
+  "name": "@balenalabs/audio-block",
   "version": "1.0.0",
-  "description": "Balena audio primitive library",
+  "description": "Balena audio block library",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
@@ -12,7 +12,7 @@
   "keywords": [
     "balena",
     "audio",
-    "primitive"
+    "block"
   ],
   "author": "Tomás Migone <tomas@balena.io>",
   "license": "MIT",

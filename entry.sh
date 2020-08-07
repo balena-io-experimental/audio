@@ -82,8 +82,9 @@ function pa_set_default_output () {
   esac
 
   # Set the sink name as PA default and save it in a temp file
-  echo "$PA_SINK" > /run/pulse/pulseaudio.sink
   if [[ -n "$PA_SINK" ]]; then
+    mkdir -p /run/pulse
+    echo "$PA_SINK" > /run/pulse/pulseaudio.sink
     echo "set-default-sink $PA_SINK" >> /etc/pulse/primitive.pa
   fi
 }
