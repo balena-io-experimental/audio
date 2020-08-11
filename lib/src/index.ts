@@ -1,4 +1,5 @@
 import PAClient, { AuthInfo, ClientInfo, ServerInfo, Sink } from '@tmigone/pulseaudio'
+import { retry } from 'ts-retry-promise'
 
 export interface BalenaAudioInfo {
   client: ClientInfo,
@@ -19,7 +20,7 @@ export default class BalenaAudio extends PAClient {
   }
 
   async listen(): Promise<BalenaAudioInfo> {
-    const protocol: AuthInfo = await this.connect()
+    const protocol: AuthInfo = await this.connectWithRetry()
     const client: ClientInfo = await this.setClientName(this.name)
     const server: ServerInfo = await this.getServerInfo()
 
@@ -47,6 +48,12 @@ export default class BalenaAudio extends PAClient {
     }
 
     return { client, protocol, server }
+  }
+
+  async connectWithRetry(): Promise<AuthInfo> {
+    return await retry(async () => {
+      return await this.connect()
+    }, { retries: 5, delay: 5000 })
   }
 
   async setVolume(volume: number, sink?: string | number) {
