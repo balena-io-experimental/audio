@@ -12,11 +12,10 @@ export default class BalenaAudio extends PAClient {
   public defaultSink: string
   constructor(
     public address: string = 'tcp:audio:4317',
-    public cookie: string,
     public subToEvents: boolean = true,
     public name: string = 'BalenaAudio'
   ) {
-    super(address, cookie)
+    super(address)
   }
 
   async listen(): Promise<BalenaAudioInfo> {
