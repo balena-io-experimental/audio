@@ -83,7 +83,6 @@ function pa_set_default_output () {
 
   # Set the sink name as PA default and save it in a temp file
   if [[ -n "$PA_SINK" ]]; then
-    mkdir -p /run/pulse
     echo "$PA_SINK" > /run/pulse/pulseaudio.sink
     echo "set-default-sink $PA_SINK" >> /etc/pulse/primitive.pa
   fi
@@ -121,6 +120,9 @@ echo "- Default output: $DEFAULT_OUTPUT"
 echo -e "\nDetected audio cards:"
 print_audio_cards
 echo -e "\n"
+
+# Create dir for temp/share files
+mkdir -p /run/pulse
 
 # Configure audio hardware
 init_audio_hardware
