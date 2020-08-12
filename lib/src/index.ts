@@ -12,7 +12,7 @@ export default class BalenaAudio extends PAClient {
   public defaultSink: string
   constructor(
     public address: string = 'tcp:audio:4317',
-    public cookie: string = '/run/pulse/pulseaudio.cookie',
+    public cookie: string,
     public subToEvents: boolean = true,
     public name: string = 'BalenaAudio'
   ) {
@@ -53,7 +53,7 @@ export default class BalenaAudio extends PAClient {
   async connectWithRetry(): Promise<AuthInfo> {
     return await retry(async () => {
       return await this.connect()
-    }, { retries: 5, delay: 5000 })
+    }, { retries: 5, delay: 5000, logger: (msg) => { console.log(msg) } })
   }
 
   async setVolume(volume: number, sink?: string | number) {
