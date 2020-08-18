@@ -55,13 +55,26 @@ export default class BalenaAudio extends PAClient {
     }, { retries: 'INFINITELY', delay: 5000, backoff: 'LINEAR', logger: (msg) => { console.log(`Error connecting to audio block - ${msg}`) } })
   }
 
+  async getInfo() {
+    if (!this.connected) {
+      throw new Error('Not connected to audio block.')
+    }
+    return await this.getServerInfo()
+  }
+
   async setVolume(volume: number, sink?: string | number) {
+    if (!this.connected) {
+      throw new Error('Not connected to audio block.')
+    }
     let sinkObject: Sink = await this.getSink(sink ?? this.defaultSink)
     let level: number = Math.round(Math.max(0, Math.min(volume, 100)) / 100 * sinkObject.baseVolume)
     return await this.setSinkVolume(sinkObject.index, level)
   }
 
   async getVolume(sink?: string | number) {
+    if (!this.connected) {
+      throw new Error('Not connected to audio block.')
+    }
     let sinkObject: Sink = await this.getSink(sink ?? this.defaultSink)
     return Math.round(sinkObject.channelVolumes.volumes[0] / sinkObject.baseVolume * 100)
   }
