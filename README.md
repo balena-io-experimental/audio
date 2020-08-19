@@ -150,12 +150,15 @@ Bluetooth support for PulseAudio is enabled out of the box. Note that this only 
 ## Supported devices
 The audio primitive has been tested to work on the following devices:
 
-| Device Type  | Status |
+| Device Type  | Supported interface (driver) |
 | ------------- | ------------- |
-| Raspberry Pi (v1 / Zero / Zero W) |  |
-| Raspberry Pi 2 |  |
-| Raspberry Pi 3 | ✔ |
-| Raspberry Pi 4 | ✔ |
-| Intel NUC | ✔ |
+| Raspberry Pi (v1 / Zero / Zero W) | - Audio jack (`bcm2835`): ✔ <br>- HDMI (`bcm2835`): ✔<br>- I2S DAC (`snd-rpi-simple`): ✔ <br>- USB (`snd-usb-audio`): ✔ |
+| Raspberry Pi 2 | - Audio jack (`bcm2835`): ✔ <br>- HDMI (`bcm2835`): ✔<br>- I2S DAC (`snd-rpi-simple`): ✔ <br>- USB (`snd-usb-audio`): ✔ |
+| Raspberry Pi 3 | - Audio jack (`bcm2835`): ✔ <br>- HDMI (`bcm2835`): ✔<br>- I2S DAC (`snd-rpi-simple`): ✔ <br>- USB (`snd-usb-audio`): ✔ |
+| Raspberry Pi 4 | - Audio jack (`bcm2835`): ✔ <br>- HDMI (`bcm2835`): ✔<br>- I2S DAC (`snd-rpi-simple`): ✔ <br>- USB (`snd-usb-audio`): ✔ |
+| Intel NUC  | - Audio jack (`snd_hda_intel`): ✔<br>- HDMI (`snd_hda_intel`): ✔<br>- USB (`snd-usb-audio`): ✔ |
+| Jetson Nano <sup>1</sup> | - HDMI (`tegrahda`): ✘ <br>- I2S DAC (`tegrasndt210ref`): ?<sup>2</sup> <br>- USB (`snd-usb-audio`): ✔ |
+| BeagleBone Black | - USB (`snd-usb-audio`): ✔ |
 
-
+1: Audio block crashes if no USB/DAC present. See: https://github.com/balenablocks/audio/issues/35
+2: Not tested. PR's welcome.
