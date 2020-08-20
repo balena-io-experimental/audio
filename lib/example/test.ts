@@ -1,5 +1,5 @@
-const BalenaAudio = require('../build/index').default
-const PULSE_SERVER = process.env.PULSE_SERVER || '192.168.90.170:4317'
+import BalenaAudio from '../src/index'
+const PULSE_SERVER = process.env.PULSE_SERVER || '192.168.90.171:4317'
 
 async function main () {
 

@@ -52,7 +52,7 @@ export default class BalenaAudio extends PAClient {
   async connectWithRetry(): Promise<AuthInfo> {
     return await retry(async () => {
       return await this.connect()
-    }, { retries: 'INFINITELY', delay: 5000, backoff: 'LINEAR', logger: (msg) => { console.log(`Error connecting to audio block - ${msg}`) } })
+    }, { retries: 'INFINITELY', delay: 5000, backoff: 'LINEAR', timeout: 10 * 60 * 1000, logger: (msg) => { console.log(`Error connecting to audio block - ${msg}`) } })
   }
 
   async getInfo() {
