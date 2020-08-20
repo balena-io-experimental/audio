@@ -48,11 +48,16 @@ function pa_set_default_output () {
     ["DAC"]=5
   )
 
+  # Check /proc/asound for known cards
+  BCM2835_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/bcm2835/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
+  DAC_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/dac|DAC|Dac/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
+  USB_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/usb|USB|Usb/ && NR%2==1 {gsub(/ /, "", $0); print $2}' | awk 'NR==1')
+  HDA_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
+
   case "${options[$OUTPUT]}" in
 
     # RPi familiy
     ${options["RPI_AUTO"]} | ${options["RPI_HEADPHONES"]} | ${options["RPI_HDMI0"]} | ${options["RPI_HDMI1"]})
-      BCM2835_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/bcm2835/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
       if [[ -n "$BCM2835_CARD" ]]; then
         amixer --card bcm2835 --quiet cset numid=3 "${options[$OUTPUT]}"
         PA_SINK="alsa_output.bcm2835.stereo-fallback"
@@ -63,7 +68,6 @@ function pa_set_default_output () {
 
     # DACs
     ${options["DAC"]})
-      DAC_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/dac|DAC|Dac/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
       if [[ -n "$DAC_CARD" ]]; then
         PA_SINK="alsa_output.dac.stereo-fallback"
       else
@@ -71,8 +75,22 @@ function pa_set_default_output () {
       fi
       ;;
 
-    # AUTO - Let PulseAudio decide, *usually* it will be USB > DAC > BUILT-IN
+    # AUTO - USB > DAC > BUILT-IN
     ${options["AUTO"]})
+      declare -a sound_cards=("$USB_CARD" "$DAC_CARD" "$BCM2835_CARD")
+      for sound_card in "${sound_cards[@]}"
+      do
+        if [[ -n "$sound_card" ]]; then
+          if [[ -n "$USB_CARD" ]]; then
+            PA_SINK="alsa_output.$sound_card.analog-stereo"
+          elif [[ -n "$DAC_CARD" ]]; then
+            PA_SINK="alsa_output.dac.stereo-fallback"
+          elif [[ -n "$BCM2835_CARD" ]]; then
+            PA_SINK="alsa_output.dac.stereo-fallback"
+          fi
+          break
+        fi
+      done
       ;;
 
     # If there was no match, we asume the provided value is the name of a PulseAudio sink.
