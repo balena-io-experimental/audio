@@ -86,7 +86,7 @@ function pa_set_default_output () {
           elif [[ -n "$DAC_CARD" ]]; then
             PA_SINK="alsa_output.dac.stereo-fallback"
           elif [[ -n "$BCM2835_CARD" ]]; then
-            PA_SINK="alsa_output.dac.stereo-fallback"
+            PA_SINK="alsa_output.bcm2835.stereo-fallback"
           fi
           break
         fi
@@ -102,7 +102,7 @@ function pa_set_default_output () {
   # Set the sink name as PA default and save it in a temp file
   if [[ -n "$PA_SINK" ]]; then
     echo "$PA_SINK" > /run/pulse/pulseaudio.sink
-    echo "set-default-sink $PA_SINK" >> /etc/pulse/primitive.pa
+    echo -e "set-default-sink $PA_SINK" >> /etc/pulse/primitive.pa
   fi
 }
 
