@@ -102,7 +102,7 @@ function pa_set_default_output () {
   # Set the sink name as PA default and save it in a temp file
   if [[ -n "$PA_SINK" ]]; then
     echo "$PA_SINK" > /run/pulse/pulseaudio.sink
-    echo -e "set-default-sink $PA_SINK" >> /etc/pulse/primitive.pa
+    echo -e "\nset-default-sink $PA_SINK" >> /etc/pulse/primitive.pa
   fi
 }
 
