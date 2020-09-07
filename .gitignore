@@ -2,3 +2,4 @@ node_modules
 # Don't publish temp dockerfiles
 Dockerfile.*
 !Dockerfile.template
+GH_TOKEN.txt

@@ -1,5 +1,5 @@
 {
-  "name": "@balenalabs/audio-block",
+  "name": "@balenablocks/audio",
   "version": "1.0.0",
   "description": "Balena audio block library",
   "main": "build/index.js",
@@ -25,6 +25,9 @@
     "CHANGELOG.md",
     "LICENSE"
   ],
+  "publishConfig": { 
+    "registry": "https://npm.pkg.github.com/" 
+  },
   "dependencies": {
     "@tmigone/pulseaudio": "^0.1.8",
     "@types/node": "^14.0.14",
