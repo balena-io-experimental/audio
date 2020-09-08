@@ -1,7 +1,7 @@
-# balena audio primitive
+# balena audio block
 
 Provides an easy way to work with audio applications in a containerized environment.
-The `audio` primitive is a docker image that runs a [PulseAudio](https://www.freedesktop.org/wiki/Software/PulseAudio/) server optimized for balenaOS.
+The `audio` block is a docker image that runs a [PulseAudio](https://www.freedesktop.org/wiki/Software/PulseAudio/) server optimized for balenaOS.
 
 ## Features
 
@@ -41,12 +41,12 @@ services:
 
 #### Send/receive audio
 
-In order to route audio through the `audio` primitive there are a few environment variables you'll need to set. Note that they must be set on your client container, where your audio application is running and **not** on the primitive itself. We recommend setting them in the `Dockerfile`. 
+In order to route audio through the `audio` block there are a few environment variables you'll need to set. Note that they must be set on your client container, where your audio application is running and **not** on the block itself. We recommend setting them in the `Dockerfile`. 
 
 | Environment variable | Description |
 | --- | --- |
 | `PULSE_SERVER` | **Required** Address of the PulseAudio server which you want to connect to. Depending on the communication protocol you want to use it can be: <br>- *UNIX socket*: `PULSE_SERVER=unix:/run/pulse/pulseaudio.socket`<br>- *TCP socket*: `PULSE_SERVER=tcp:audio:4317` |
-| `PULSE_SINK` | **Optional** The PulseAudio sink your application will send audio to. If not set, the primitive will use the PulseAudio default sink. Unless you are building a complex audio application we don't recommend setting this variable. If you want to select which output to use, for example HDMI or audio jack for a Raspberry Pi use the `AUDIO_OUTPUT` [env var](#environment-variables) on the primitive to select the output device.  |
+| `PULSE_SINK` | **Optional** The PulseAudio sink your application will send audio to. If not set, the block will use the PulseAudio default sink. Unless you are building a complex audio application we don't recommend setting this variable. If you want to select which output to use, for example HDMI or audio jack for a Raspberry Pi use the `AUDIO_OUTPUT` [env var](#environment-variables) on the block to select the output device.  |
 | `PULSE_SOURCE` | **Optional** The PulseAudio source your application will get audio from. |
 
 Setting these environment variables will instruct your application to route audio to the PulseAudio server on the `audio` container. For this to work your application must have built-in support for  PulseAudio as an audio backend. Most applications do, though some might require installing or configuring additional packages. If your application does not have native support for the PulseAudio backend you'll need to use your container's ALSA backend to bridge over to PulseAudio.
@@ -77,14 +77,14 @@ Setting up the ALSA bridge requires extra configuration steps on your containers
 Before making use of audio capabilities you should run this script. An easy way to do so is by including the following instruction in your `Dockerfile`:
 
 ```Dockerfile
-RUN curl --silent https://raw.githubusercontent.com/balena-io-playground/audio-primitive/master/scripts/alsa-bridge/debian-setup.sh | sh
+RUN curl --silent https://raw.githubusercontent.com/balena-io-playground/audio-block/master/scripts/alsa-bridge/debian-setup.sh | sh
 ```
 
 
 ## Customization
 ### Extend image configuration
 
-You can extend the `audio` primitive to include custom configuration as you would with any other `Dockerfile`. Just make sure you don't override the `ENTRYPOINT` as it contains important system configuration.
+You can extend the `audio` block to include custom configuration as you would with any other `Dockerfile`. Just make sure you don't override the `ENTRYPOINT` as it contains important system configuration.
 
 Here are some of the most common extension cases: 
 
@@ -126,16 +126,16 @@ The following environment variables allow some degree of configuration:
 
 ### Companion library
 
-If you need to manipulate the primitive's behaviour at runtime you can connect to the PulseAudio server, send commands and receive data or events from it. You should be able to use any existing library that implements the PA client protocol over TCP/UNIX sockets (some examples: [Python](https://pypi.org/project/pulsectl/), [Rust](https://docs.rs/libpulse-binding/2.16.0/libpulse_binding/), [JavaScript](https://github.com/stanford-oval/node-pulseaudio#readme)), or you could even [write your own](https://freedesktop.org/software/pulseaudio/doxygen/). Libraries that manipulate PA over DBUS won't work because we don't run the pulse dbus daemon. 
+If you need to manipulate the block's behaviour at runtime you can connect to the PulseAudio server, send commands and receive data or events from it. You should be able to use any existing library that implements the PA client protocol over TCP/UNIX sockets (some examples: [Python](https://pypi.org/project/pulsectl/), [Rust](https://docs.rs/libpulse-binding/2.16.0/libpulse_binding/), [JavaScript](https://github.com/stanford-oval/node-pulseaudio#readme)), or you could even [write your own](https://freedesktop.org/software/pulseaudio/doxygen/). Libraries that manipulate PA over DBUS won't work because we don't run the pulse dbus daemon. 
 
 On this note, we built a companion javascript library that exposes the most common use cases with an easy to use interface. Install it with: 
-```npm install @balenalabs/audio-primitive``` (**Note**: Not published yet, you can find it in this repo at the `lib` folder). 
+```npm install @balenalabs/audio-block``` (**Note**: Not published yet, you can find it in this repo at the `lib` folder). 
 
 Currently this is the exposed API (more to come), checkout `lib/example` for a fully fledged example:
 
 Class `BalenaAudio`:
 * constructor(address, cookie, subToEvents, name): 
-* start(): Connect to the primitive
+* start(): Connect to the block
 * setVolume(vol): Set the volume. `vol` in %.
 * getVolume(): Gets the current sink volume in %.
 * events: Listen to `play` and `stop` events.
@@ -145,10 +145,10 @@ Class `BalenaAudio`:
 
 ### Bluetooth
 
-Bluetooth support for PulseAudio is enabled out of the box. Note that this only provides the backend that routes bluetooth packets over to PulseAudio, this does not include the Bluetooth agent that's required for initiating a connection and pairing devices. Check out our [Bluetooth primitive](https://github.com/balena-io-playground/bluetooth-primitive) for an easy to use Bluetooth agent.
+Bluetooth support for PulseAudio is enabled out of the box. Note that this only provides the backend that routes bluetooth packets over to PulseAudio, this does not include the Bluetooth agent that's required for initiating a connection and pairing devices. Check out our [Bluetooth block](https://github.com/balena-io-playground/bluetooth-block) for an easy to use Bluetooth agent.
 
 ## Supported devices
-The audio primitive has been tested to work on the following devices:
+The audio block has been tested to work on the following devices:
 
 | Device Type  | Supported interface (driver) |
 | ------------- | ------------- |
