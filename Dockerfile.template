@@ -19,4 +19,4 @@ COPY daemon.conf /etc/pulse/daemon.conf
 COPY 95-balena-audio.rules /etc/udev/rules.d/95-balena-audio.rules
 
 ENTRYPOINT [ "/bin/bash", "/usr/src/entry.sh" ]
-CMD [ "pulseaudio" ]
+CMD [ "pulseaudio", "--daemonize=false", "--log-target=stderr" ]
