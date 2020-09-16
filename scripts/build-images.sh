@@ -6,10 +6,10 @@ function build_and_push_image () {
   local DOCKER_ARCH=$2
   echo "Building for $BALENA_MACHINE_NAME..."
   sed "s/%%BALENA_MACHINE_NAME%%/$BALENA_MACHINE_NAME/g" Dockerfile.template > Dockerfile.$BALENA_MACHINE_NAME
-  docker buildx build -t balenaplayground/balenalabs-audio:$BALENA_MACHINE_NAME --platform $DOCKER_ARCH --file Dockerfile.$BALENA_MACHINE_NAME .
+  docker buildx build -t balenablocks/audio:$BALENA_MACHINE_NAME --platform $DOCKER_ARCH --file Dockerfile.$BALENA_MACHINE_NAME .
   
   echo "Publishing..."
-  docker push balenaplayground/balenalabs-audio:$BALENA_MACHINE_NAME
+  docker push balenablocks/audio:$BALENA_MACHINE_NAME
 
   echo "Cleaning up..."
   rm Dockerfile.$BALENA_MACHINE_NAME

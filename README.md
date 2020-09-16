@@ -24,7 +24,7 @@ volumes:
 services:
 
   audio:
-    image: balenaplayground/balenalabs-audio:raspberrypi4-64  # See supported devices for other archs
+    image: balenablocks/balenalabs-audio:raspberrypi4-64  # See supported devices for other archs
     privileged: true
     labels:
       io.balena.features.dbus: 1  # Only required for bluetooth support
@@ -77,7 +77,7 @@ Setting up the ALSA bridge requires extra configuration steps on your containers
 Before making use of audio capabilities you should run this script. An easy way to do so is by including the following instruction in your `Dockerfile`:
 
 ```Dockerfile
-RUN curl --silent https://raw.githubusercontent.com/balena-io-playground/audio-block/master/scripts/alsa-bridge/debian-setup.sh | sh
+RUN curl --silent https://raw.githubusercontent.com/balenablocks/audio/master/scripts/alsa-bridge/debian-setup.sh| sh
 ```
 
 
@@ -91,7 +91,7 @@ Here are some of the most common extension cases:
 - Pass a flag to the PulseAudio server:
 
 ```Dockerfile
-FROM balenaplayground/balenalabs-audio:%%BALENA_MACHINE_NAME%%
+FROM balenablocks/balenalabs-audio:%%BALENA_MACHINE_NAME%%
 
 CMD [ "--disallow-module-loading" ]
 ```
@@ -99,7 +99,7 @@ CMD [ "--disallow-module-loading" ]
 - Add custom configuration files:
 
 ```Dockerfile
-FROM balenaplayground/balenalabs-audio:%%BALENA_MACHINE_NAME%%
+FROM balenablocks/balenalabs-audio:%%BALENA_MACHINE_NAME%%
 
 COPY custom.pa /usr/src/custom.pa
 CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
@@ -108,7 +108,7 @@ CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
 - Start PulseAudio from your own bash script:
 
 ```Dockerfile
-FROM balenaplayground/balenalabs-audio:%%BALENA_MACHINE_NAME%%
+FROM balenablocks/balenalabs-audio:%%BALENA_MACHINE_NAME%%
 
 COPY custom.pa /usr/src/custom.pa
 COPY start.sh /usr/src/start.sh
@@ -145,7 +145,7 @@ Class `BalenaAudio`:
 
 ### Bluetooth
 
-Bluetooth support for PulseAudio is enabled out of the box. Note that this only provides the backend that routes bluetooth packets over to PulseAudio, this does not include the Bluetooth agent that's required for initiating a connection and pairing devices. Check out our [Bluetooth block](https://github.com/balena-io-playground/bluetooth-block) for an easy to use Bluetooth agent.
+Bluetooth support for PulseAudio is enabled out of the box. Note that this only provides the backend that routes bluetooth packets over to PulseAudio, this does not include the Bluetooth agent that's required for initiating a connection and pairing devices. Check out our [Bluetooth block](https://github.com/balenablocks/bluetooth) for an easy to use Bluetooth agent.
 
 ## Supported devices
 The audio block has been tested to work on the following devices:
