@@ -24,7 +24,7 @@ volumes:
 services:
 
   audio:
-    image: balenablocks/balenalabs-audio:raspberrypi4-64  # See supported devices for other archs
+    image: balenablocks/audio:raspberrypi4-64  # See supported devices for other archs
     privileged: true
     labels:
       io.balena.features.dbus: 1  # Only required for bluetooth support
