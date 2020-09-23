@@ -62,6 +62,7 @@ For applications with PulseAudio support, the audio is routed as follows:
 Here is a non-exhaustive list of applications with PulseAudio backend that have been tested to work, feel free to PR more: 
 - [SoX](http://sox.sourceforge.net/): PA backend distributed via `libsox-fmt-pulse` package
 - [MPlayer](http://www.mplayerhq.hu/): Native PA backend
+- [FFmpeg](https://ffmpeg.org/): Native PA backend
 
 **ALSA bridge**
 
@@ -91,7 +92,7 @@ Here are some of the most common extension cases:
 - Pass a flag to the PulseAudio server:
 
 ```Dockerfile
-FROM balenablocks/balenalabs-audio:%%BALENA_MACHINE_NAME%%
+FROM balenablocks/audio:%%BALENA_MACHINE_NAME%%
 
 CMD [ "--disallow-module-loading" ]
 ```
@@ -99,7 +100,7 @@ CMD [ "--disallow-module-loading" ]
 - Add custom configuration files:
 
 ```Dockerfile
-FROM balenablocks/balenalabs-audio:%%BALENA_MACHINE_NAME%%
+FROM balenablocks/audio:%%BALENA_MACHINE_NAME%%
 
 COPY custom.pa /usr/src/custom.pa
 CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
@@ -108,7 +109,7 @@ CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
 - Start PulseAudio from your own bash script:
 
 ```Dockerfile
-FROM balenablocks/balenalabs-audio:%%BALENA_MACHINE_NAME%%
+FROM balenablocks/audio:%%BALENA_MACHINE_NAME%%
 
 COPY custom.pa /usr/src/custom.pa
 COPY start.sh /usr/src/start.sh
