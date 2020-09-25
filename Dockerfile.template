@@ -12,11 +12,16 @@ RUN install_packages pulseaudio pulseaudio-module-bluetooth xxd alsa-utils
 # For local development
 #dev-cmd-live=pulseaudio || balena-idle
 
+# PulseAudio configuration
+COPY pulseaudio/primitive.pa /etc/pulse/primitive.pa
+COPY pulseaudio/client.conf /etc/pulse/client.conf
+COPY pulseaudio/daemon.conf /etc/pulse/daemon.conf
+
+# UDev configuration
+COPY udev/95-balena-audio.rules /etc/udev/rules.d/95-balena-audio.rules
+
+# Entrypoint
 COPY entry.sh .
-COPY primitive.pa /etc/pulse/primitive.pa
-COPY client.conf /etc/pulse/client.conf
-COPY daemon.conf /etc/pulse/daemon.conf
-COPY 95-balena-audio.rules /etc/udev/rules.d/95-balena-audio.rules
 
 ENTRYPOINT [ "/bin/bash", "/usr/src/entry.sh" ]
 CMD [ "pulseaudio" ]
