@@ -51,7 +51,7 @@ function pa_set_default_output () {
   # Check /proc/asound for known cards
   BCM2835_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/bcm2835/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
   DAC_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/dac|DAC|Dac/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
-  USB_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/usb|USB|Usb/ && NR%2==1 {gsub(/ /, "", $0); print $2}' | awk 'NR==1')
+  USB_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/usb|USB|Usb/ && NR%2==1 {print $1}' | awk 'NR==1' | sed 's/ //g')
   HDA_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
 
   case "${options[$OUTPUT]}" in
@@ -82,7 +82,7 @@ function pa_set_default_output () {
       do
         if [[ -n "$sound_card" ]]; then
           if [[ -n "$USB_CARD" ]]; then
-            PA_SINK="alsa_output.$sound_card.analog-stereo"
+            PA_SINK="alsa_output.usb-soundcard-$USB_CARD.analog-stereo"
           elif [[ -n "$DAC_CARD" ]]; then
             PA_SINK="alsa_output.dac.stereo-fallback"
           elif [[ -n "$BCM2835_CARD" ]]; then
