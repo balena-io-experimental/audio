@@ -29,8 +29,6 @@ function pa_set_cookie() {
 function pa_read_cookie () {
   if [[ -f /run/pulse/pulseaudio.cookie ]]; then
     xxd -c 512 -p /run/pulse/pulseaudio.cookie
-  else
-    echo
   fi
 }
 
@@ -38,9 +36,12 @@ function pa_set_default_output () {
   local OUTPUT="$1"
   local PA_SINK=""
 
-  # RPI_ keys also act as indexes for setting the PCM Route, don't change them
+  # Note on RPi boards:
+  # - RPI_ keys also act as indexes for setting the PCM Route for Raspberry Pi devices before 5.4 kernel, don't change the order or value of them.
+  # - balenaOS v2.54.3+rev1 upgraded Linux kernel to 5.4 for Raspberry Pi 4 devices
+  # - Docs for pre 5.4 --> https://web.archive.org/web/20200427023741/https://www.raspberrypi.org/documentation/configuration/audio-config.md
   declare -A options=(
-    ["RPI_AUTO"]=0
+    ["RPI_AUTO"]=0          # Deprecated on linux 5.4 
     ["RPI_HEADPHONES"]=1
     ["RPI_HDMI0"]=2
     ["RPI_HDMI1"]=3
@@ -49,18 +50,32 @@ function pa_set_default_output () {
   )
 
   # Check /proc/asound for known cards
-  BCM2835_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/bcm2835/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
-  DAC_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/dac|DAC|Dac/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
-  USB_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/usb|USB|Usb/ && NR%2==1 {print $1}' | awk 'NR==1' | sed 's/ //g')
-  HDA_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
+  BCM2835_CARDS=($(cat /proc/asound/cards | awk -F '\[|\]:' '/bcm2835/ && NR%2==1 {gsub(/ /, "", $0); print $2}'))
+  USB_CARDS=($(cat /proc/asound/cards | awk -F '\[|\]:' '/usb/ && NR%2==1 {gsub(/ /, "", $0); print $2}'))
+  DAC_CARD=$(cat /proc/asound/cards | awk -F '\[|\]:' '/dac|DAC|Dac/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
+  HDA_CARD=$(cat /proc/asound/cards | awk -F '\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
 
   case "${options[$OUTPUT]}" in
 
     # RPi familiy
     ${options["RPI_AUTO"]} | ${options["RPI_HEADPHONES"]} | ${options["RPI_HDMI0"]} | ${options["RPI_HDMI1"]})
-      if [[ -n "$BCM2835_CARD" ]]; then
-        amixer --card bcm2835 --quiet cset numid=3 "${options[$OUTPUT]}"
-        PA_SINK="alsa_output.bcm2835.stereo-fallback"
+      if [[ -n "$BCM2835_CARDS" ]]; then
+        if [[ "${BCM2835_CARDS[@]}" =~ "bcm2835-alsa" ]]; then
+          # Devices running linux kernel < 5.4
+          amixer --card bcm2835-alsa --quiet cset numid=3 "${options[$OUTPUT]}"
+          PA_SINK="alsa_output.bcm2835-alsa.stereo-fallback"
+        else
+          # Devices running linux kernel >= 5.4
+          if [[ "${options[$OUTPUT]}" == "${options["RPI_HEADPHONES"]}" ]]; then
+            PA_SINK="alsa_output.bcm2835-jack.stereo-fallback"
+          elif [[ "${options[$OUTPUT]}" == "${options["RPI_HDMI0"]}" ]]; then
+            PA_SINK="alsa_output.bcm2835-hdmi0.stereo-fallback"
+          elif [[ "${options[$OUTPUT]}" == "${options["RPI_HDMI1"]}" ]]; then
+            PA_SINK="alsa_output.bcm2835-hdmi1.stereo-fallback"
+          else
+            echo "WARNING: Option not supported for this kernel version. Using defaults..."
+          fi
+        fi
       else
         echo "WARNING: BCM2835 audio card not found, are you sure you are running on a Raspberry Pi?"
       fi
@@ -77,16 +92,22 @@ function pa_set_default_output () {
 
     # AUTO - USB > DAC > BUILT-IN
     ${options["AUTO"]})
-      declare -a sound_cards=("$USB_CARD" "$DAC_CARD" "$BCM2835_CARD")
+      declare -a sound_cards=("${USB_CARDS[@]}" "$DAC_CARD" "${BCM2835_CARDS[@]}")
       for sound_card in "${sound_cards[@]}"
       do
         if [[ -n "$sound_card" ]]; then
-          if [[ -n "$USB_CARD" ]]; then
-            PA_SINK="alsa_output.usb-soundcard-$USB_CARD.analog-stereo"
+          if [[ -n "$USB_CARDS" ]]; then
+            PA_SINK="alsa_output.${USB_CARDS[0]}.analog-stereo"
           elif [[ -n "$DAC_CARD" ]]; then
             PA_SINK="alsa_output.dac.stereo-fallback"
-          elif [[ -n "$BCM2835_CARD" ]]; then
-            PA_SINK="alsa_output.bcm2835.stereo-fallback"
+          elif [[ -n "$BCM2835_CARDS" ]]; then
+            if [[ "${BCM2835_CARDS[@]}" =~ "bcm2835-alsa" ]]; then
+              # Devices running linux kernel < 5.4
+              PA_SINK="alsa_output.bcm2835-alsa.stereo-fallback"
+            else
+              # Devices running linux kernel >= 5.4
+              PA_SINK="alsa_output.bcm2835-jack.stereo-fallback"
+            fi
           fi
           break
         fi
@@ -112,7 +133,7 @@ function init_audio_hardware () {
   sleep 10
 
   # Intel NUC
-  HDA_CARD=$(cat /proc/asound/cards | awk -F'\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
+  HDA_CARD=$(cat /proc/asound/cards | awk -F '\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
   if [[ -n "$HDA_CARD" ]]; then
     echo "Initializing Intel NUC audio hardware..."
     amixer --card hda-intel --quiet cset numid=2 on,on  # Master Playback Switch --> turn on hardware
@@ -122,7 +143,7 @@ function init_audio_hardware () {
 }
 
 function print_audio_cards () {
-  cat /proc/asound/cards | awk -F'\[|\]:' 'NR%2==1 {gsub(/ /, "", $0); print $1,$2,$3}'
+  cat /proc/asound/cards | awk -F '\[|\]:' 'NR%2==1 {gsub(/ /, "", $0); print $1,$2,$3}'
 }
 
 # PulseAudio primitive environment variables and defaults
@@ -143,9 +164,11 @@ echo -e "\n"
 mkdir -p /run/pulse
 
 # Configure audio hardware
+# ALSA CONFIG
 init_audio_hardware
 pa_set_default_output "$DEFAULT_OUTPUT"
 
+# PULSE AUDIO CONFIG
 # Disable PulseAudio modules that we don't support
 pa_disable_module module-console-kit
 

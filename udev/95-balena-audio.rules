@@ -1,16 +1,20 @@
-# This file is NOT part of PulseAudio
-# It contains UDev rules to staticaly assign ALSA and PulseAudio names to known sound card types.
-# To add missing DACs find out the driver name by checking:
-# - dmesg
-# - https://github.com/raspberrypi/linux/tree/1c64f4bc22811d2d371b271daa3fb27895a8abdd/sound/soc/bcm
+# This file contains UDev rules to staticaly assign ALSA and PulseAudio names to known sound card types.
+# To add missing devices find out the driver name by checking one of the following:
+# - dmesg (less useful)
+# - udevadm info -a /dev/snd/controlC*
+# - For DACs: https://github.com/raspberrypi/linux/tree/rpi-5.4.y/sound/soc/bcm
+# - For BCM2835 (RPi): https://github.com/raspberrypi/linux/blob/rpi-5.4.y/drivers/staging/vc04_services/bcm2835-audio/bcm2835.c
 
 # ALSA
 SUBSYSTEM!="sound", GOTO="alsa_card_naming_end"
-ACTION!="add", GOTO="alsa_card_naming_end"
+ACTION!="change", GOTO="alsa_card_naming_end"
 
 DRIVERS=="snd_hda_intel", ATTR{id}="hda-intel"
 DRIVERS=="snd-usb-audio", ATTR{id}="usb-soundcard-%n"
-DRIVERS=="bcm2835_audio", ATTR{id}="bcm2835"
+ATTR{id}=="ALSA", DRIVERS=="bcm2835_audio", ATTR{id}="bcm2835-alsa"
+ATTR{id}=="Headphones", DRIVERS=="bcm2835_audio", ATTR{id}="bcm2835-jack"
+ATTR{id}=="b1", DRIVERS=="bcm2835_audio", ATTR{id}="bcm2835-hdmi0"
+ATTR{id}=="b2", DRIVERS=="bcm2835_audio", ATTR{id}="bcm2835-hdmi1"
 
 # Raspberry Pi DACs
 DRIVERS=="snd-rpi-simple", ATTR{id}="dac"
@@ -48,7 +52,10 @@ SUBSYSTEM!="sound", GOTO="pa_card_naming_end"
 ACTION!="change", GOTO="pa_card_naming_end"
 KERNEL!="card*", GOTO="pa_card_naming_end"
 
-DRIVERS=="bcm2835_audio", ENV{PULSE_NAME}="bcm2835"
+ATTR{id}=="bcm2835-alsa", DRIVERS=="bcm2835_audio", ENV{PULSE_NAME}="bcm2835-alsa"
+ATTR{id}=="bcm2835-jack", DRIVERS=="bcm2835_audio", ENV{PULSE_NAME}="bcm2835-jack"
+ATTR{id}=="bcm2835-hdmi0", DRIVERS=="bcm2835_audio", ENV{PULSE_NAME}="bcm2835-hdmi0"
+ATTR{id}=="bcm2835-hdmi1", DRIVERS=="bcm2835_audio", ENV{PULSE_NAME}="bcm2835-hdmi1"
 DRIVERS=="snd_hda_intel", ENV{PULSE_NAME}="hda-intel"
 DRIVERS=="snd-usb-audio", ENV{PULSE_NAME}="usb-soundcard-%n"
 
