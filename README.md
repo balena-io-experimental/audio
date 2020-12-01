@@ -78,9 +78,8 @@ Setting up the ALSA bridge requires extra configuration steps on your containers
 Before making use of audio capabilities you should run this script. An easy way to do so is by including the following instruction in your `Dockerfile`:
 
 ```Dockerfile
-RUN curl --silent https://raw.githubusercontent.com/balenablocks/audio/master/scripts/alsa-bridge/debian-setup.sh| sh
+RUN curl -skL https://raw.githubusercontent.com/balenablocks/audio/master/scripts/alsa-bridge/debian-setup.sh| sh
 ```
-
 
 ## Customization
 ### Extend image configuration

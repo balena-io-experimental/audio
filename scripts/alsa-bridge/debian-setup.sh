@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+echo "Setting up ALSA bridge..."
+
 # Install pulse plugins for ALSA
 apt-get update
 apt-get install libasound2-plugins
@@ -44,3 +46,5 @@ hook_func.pulse_load_if_running {
   }
 ]
 EOF
+
+echo "ALSA bridge configured correctly!"
