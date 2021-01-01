@@ -7,7 +7,7 @@ echo "Setting up ALSA bridge..."
 apt-get update
 apt-get install libasound2-plugins
 
-# Set PulseAudio as the default output plugint for ALSA
+# Set PulseAudio as the default output plugin for ALSA
 mkdir -p  /usr/share/alsa/
 cat << EOF > /usr/share/alsa/pulse-alsa.conf
 # This file is referred to by /usr/share/alsa/pulse.conf to set pulseaudio as

@@ -44,6 +44,11 @@ DRIVERS=="voicehat-codec", ATTR{id}="dac"
 DRIVERS=="audiosense-snd-card", ATTR{id}="dac"
 DRIVERS=="digidac1-audio", ATTR{id}="dac"
 DRIVERS=="cygnus-ssp", ATTR{id}="dac"
+DRIVERS=="snd-rpi-hifiberry-dacplushd", ATTR{id}="dac"
+DRIVERS=="snd-pifi-40", ATTR{id}="dac"
+DRIVERS=="allo-cs43198", ATTR{id}="dac"
+DRIVERS=="allo-katana-codec", ATTR{id}="dac"
+DRIVERS=="snd-pifi-40", ATTR{id}="dac"
 
 LABEL="alsa_card_naming_end"
 
@@ -87,6 +92,11 @@ DRIVERS=="voicehat-codec", ENV{PULSE_NAME}="dac"
 DRIVERS=="audiosense-snd-card", ENV{PULSE_NAME}="dac"
 DRIVERS=="digidac1-audio", ENV{PULSE_NAME}="dac"
 DRIVERS=="cygnus-ssp", ENV{PULSE_NAME}="dac"
+DRIVERS=="snd-rpi-hifiberry-dacplushd", ENV{PULSE_NAME}="dac"
+DRIVERS=="snd-pifi-40", ENV{PULSE_NAME}="dac"
+DRIVERS=="allo-cs43198", ENV{PULSE_NAME}="dac"
+DRIVERS=="allo-katana-codec", ENV{PULSE_NAME}="dac"
+DRIVERS=="snd-pifi-40", ENV{PULSE_NAME}="dac"
 
 LABEL="pa_card_naming_end"
 
