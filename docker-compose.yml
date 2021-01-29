@@ -1,22 +1,22 @@
 version: '2'
 
 volumes:
-  pulse:
+  pulse:                            # Only required if using PA over UNIX socket
 
 services:
 
   # PulseAudio server
   audio:
-    build: ./
+    build: ./                       # See supported devices for other archs
     privileged: true
     labels:
-      io.balena.features.dbus: 1
+      io.balena.features.dbus: 1    # Only required for bluetooth support
     ports:
-      - 4317:4317
+      - 4317:4317                   # Only required if using PA over TCP socket
     volumes:
-      - 'pulse:/run/pulse'
+      - 'pulse:/run/pulse'          # Only required if using PA over UNIX socket
 
-  # EXAMPLES
+  # EXAMPLES SECTION
   # Bluetooth agent
   bluetooth:
     build: ./examples/bluetooth
