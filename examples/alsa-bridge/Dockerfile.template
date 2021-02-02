@@ -2,7 +2,8 @@ FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-python:3.5
 WORKDIR /usr/src
 
 ENV PULSE_SERVER=unix:/run/pulse/pulseaudio.socket
-ENV PULSE_SINK=alsa_output.default
+# Specify a PULSE_SINK, otherwise use the default
+# ENV PULSE_SINK=alsa_output.bcm2835-jack.stereo-fallback
 
 # Install simpleaudio
 RUN install_packages python3-dev libasound2-dev g++

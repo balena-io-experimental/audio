@@ -1,7 +1,8 @@
 FROM balenalib/%%BALENA_MACHINE_NAME%%-node:12-run
 
 ENV PULSE_SERVER=unix:/run/pulse/pulseaudio.socket
-ENV PULSE_SINK=alsa_output.default
+# Specify a PULSE_SINK, otherwise use the default
+# ENV PULSE_SINK=alsa_output.bcm2835-jack.stereo-fallback
 
 # Install dependencies for pulseaudio2 node package
 RUN install_packages python pkg-config make g++ libpulse-dev
