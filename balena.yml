@@ -1,5 +1,6 @@
 name: "audio"
 description: "Provides an easy way to work with audio applications in a containerized environment."
+version: "0.1.8"
 type: "sw.application"
 assets:
   repository:
