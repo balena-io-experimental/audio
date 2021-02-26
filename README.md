@@ -1,6 +1,6 @@
 # balena audio block
 
-Provides an easy way to work with audio applications in a containerized environment.
+_Provides an easy way to work with audio applications in a containerized environment.
 The `audio` block is a docker image that runs a [PulseAudio](https://www.freedesktop.org/wiki/Software/PulseAudio/) server optimized for balenaOS.
 
 ## Features
