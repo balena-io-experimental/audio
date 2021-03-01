@@ -1,24 +1,26 @@
-name: "audio"
-description: "Provides an easy way to work with audio applications in a containerized environment."
-version: "0.1.8"
-type: "sw.application"
+name: audio
+description: >-
+  Provides an easy way to work with audio applications in a containerized
+  environment.
+version: 0.1.11
+type: sw.application
 assets:
   repository:
-    type: "blob.asset"
+    type: blob.asset
     data:
-      url: "https://github.com/balenablocks/audio"
+      url: 'https://github.com/balenablocks/audio'
   logo:
-    type: "blob.asset"
+    type: blob.asset
     data:
-      url: "https://raw.githubusercontent.com/balenablocks/audio/master/logo.png"
+      url: 'https://raw.githubusercontent.com/balenablocks/audio/master/logo.png'
 data:
-  defaultDeviceType: "raspberrypi4-64"
+  defaultDeviceType: raspberrypi4-64
   supportedDeviceTypes:
-    - "raspberry-pi"
-    - "raspberry-pi2"
-    - "raspberrypi3"
-    - "raspberrypi3-64"
-    - "raspberrypi4-64"
-    - "intel-nuc"
-    - "jetson-nano"
-    - "beaglebone-black"
+    - raspberry-pi
+    - raspberry-pi2
+    - raspberrypi3
+    - raspberrypi3-64
+    - raspberrypi4-64
+    - intel-nuc
+    - jetson-nano
+    - beaglebone-black
