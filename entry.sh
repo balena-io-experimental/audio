@@ -153,6 +153,7 @@ COOKIE="${AUDIO_PULSE_COOKIE}"
 
 echo "--- Audio ---"
 echo "Starting audio service with settings:"
+echo "- $(pulseaudio --version)"
 echo "- Pulse log level: $LOG_LEVEL"
 [[ -n ${COOKIE} ]] && echo "- Pulse cookie: $COOKIE"
 echo "- Default output: $DEFAULT_OUTPUT"

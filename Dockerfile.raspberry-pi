@@ -1,4 +1,4 @@
-FROM balenalib/%%BALENA_MACHINE_NAME%%-debian:buster-run
+FROM balenalib/raspberry-pi-debian:buster-run
 WORKDIR /usr/src
 
 # Required to autodetect ALSA devices
@@ -9,6 +9,8 @@ ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 
 # We want pulseaudio v13 which is available only in buster-backports
 RUN echo "deb http://deb.debian.org/debian buster-backports main" >> /etc/apt/sources.list
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
 RUN install_packages -t buster-backports pulseaudio=13* pulseaudio-module-bluetooth=13* 
 RUN install_packages xxd alsa-utils
 
