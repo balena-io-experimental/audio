@@ -123,7 +123,7 @@ function pa_set_default_output () {
   # Set the sink name as PA default and save it in a temp file
   if [[ -n "$PA_SINK" ]]; then
     echo "$PA_SINK" > /run/pulse/pulseaudio.sink
-    echo -e "\nset-default-sink $PA_SINK" >> /etc/pulse/primitive.pa
+    echo -e "\nset-default-sink $PA_SINK" >> /etc/pulse/block.pa
   fi
 }
 
@@ -146,7 +146,7 @@ function print_audio_cards () {
   cat /proc/asound/cards | mawk -F '\[|\]:' 'NR%2==1 {gsub(/ /, "", $0); print $1,$2,$3}'
 }
 
-# PulseAudio primitive environment variables and defaults
+# PulseAudio block environment variables and defaults
 LOG_LEVEL="${AUDIO_LOG_LEVEL:-NOTICE}"
 DEFAULT_OUTPUT="${AUDIO_OUTPUT:-AUTO}"
 COOKIE="${AUDIO_PULSE_COOKIE}"
@@ -174,7 +174,7 @@ pa_set_default_output "$DEFAULT_OUTPUT"
 pa_disable_module module-console-kit
 
 # Disable PulseAudio modules that need special configuration
-# These will be loaded and configured by the primitive.pa config file
+# These will be loaded and configured by the block.pa config file
 pa_disable_module module-bluetooth-discover
 pa_disable_module module-bluetooth-policy
 pa_disable_module module-native-protocol-unix
