@@ -50,10 +50,10 @@ function pa_set_default_output () {
   )
 
   # Check /proc/asound for known cards
-  BCM2835_CARDS=($(cat /proc/asound/cards | awk -F '\[|\]:' '/bcm2835/ && NR%2==1 {gsub(/ /, "", $0); print $2}'))
-  USB_CARDS=($(cat /proc/asound/cards | awk -F '\[|\]:' '/usb/ && NR%2==1 {gsub(/ /, "", $0); print $2}'))
-  DAC_CARD=$(cat /proc/asound/cards | awk -F '\[|\]:' '/dac|DAC|Dac/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
-  HDA_CARD=$(cat /proc/asound/cards | awk -F '\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
+  BCM2835_CARDS=($(cat /proc/asound/cards | mawk -F '\[|\]:' '/bcm2835/ && NR%2==1 {gsub(/ /, "", $0); print $2}'))
+  USB_CARDS=($(cat /proc/asound/cards | mawk -F '\[|\]:' '/usb/ && NR%2==1 {gsub(/ /, "", $0); print $2}'))
+  DAC_CARD=$(cat /proc/asound/cards | mawk -F '\[|\]:' '/dac|DAC|Dac/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
+  HDA_CARD=$(cat /proc/asound/cards | mawk -F '\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
 
   case "${options[$OUTPUT]}" in
 
@@ -133,7 +133,7 @@ function init_audio_hardware () {
   sleep 10
 
   # Intel NUC
-  HDA_CARD=$(cat /proc/asound/cards | awk -F '\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
+  HDA_CARD=$(cat /proc/asound/cards | mawk -F '\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
   if [[ -n "$HDA_CARD" ]]; then
     echo "Initializing Intel NUC audio hardware..."
     amixer --card hda-intel --quiet cset numid=2 on,on  # Master Playback Switch --> turn on hardware
@@ -143,7 +143,7 @@ function init_audio_hardware () {
 }
 
 function print_audio_cards () {
-  cat /proc/asound/cards | awk -F '\[|\]:' 'NR%2==1 {gsub(/ /, "", $0); print $1,$2,$3}'
+  cat /proc/asound/cards | mawk -F '\[|\]:' 'NR%2==1 {gsub(/ /, "", $0); print $1,$2,$3}'
 }
 
 # PulseAudio primitive environment variables and defaults

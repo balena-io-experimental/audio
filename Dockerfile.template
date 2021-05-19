@@ -1,16 +1,24 @@
-FROM balenalib/%%BALENA_MACHINE_NAME%%-debian:buster-run
+# --- Note on PulseAudio version ---
+# Alpine 3.12 pins PulseAudio version to 13.x.x
+# See https://pkgs.alpinelinux.org/packages?name=pulseaudio&branch=v3.12
+
+FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine:3.12-run
 WORKDIR /usr/src
 
-# Required to autodetect ALSA devices
+# UDev is required to autodetect ALSA devices
+# DBus is required for module-bluetooth-discover
 ENV UDEV=on
-
-# DBUS is required for module-bluetooth-discover
 ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 
-# We want pulseaudio v13 which is available only in buster-backports
-RUN echo "deb http://deb.debian.org/debian buster-backports main" >> /etc/apt/sources.list
-RUN install_packages -t buster-backports pulseaudio=13* pulseaudio-module-bluetooth=13* 
-RUN install_packages xxd alsa-utils
+# Install PulseAudio and dependencies
+RUN install_packages \
+  alsa-utils \
+  mawk \
+  pulseaudio~=13 \
+  pulseaudio-alsa \
+  pulseaudio-bluez \
+  pulseaudio-utils \
+  xxd
 
 # For local development
 #dev-cmd-live=pulseaudio || balena-idle
@@ -25,6 +33,6 @@ COPY udev/95-balena-audio.rules /etc/udev/rules.d/95-balena-audio.rules
 
 # Entrypoint
 COPY entry.sh .
-
 ENTRYPOINT [ "/bin/bash", "/usr/src/entry.sh" ]
+
 CMD [ "pulseaudio" ]

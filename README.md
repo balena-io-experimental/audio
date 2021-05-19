@@ -5,7 +5,8 @@ The `audio` block is a docker image that runs a [PulseAudio](https://www.freedes
 
 ## Features
 
-- PulseAudio configuration optimized for balenaOS, extendable via PA config files
+- PulseAudio v13 audio server
+- Configuration optimized for balenaOS, extendable via PA config files
 - Supports both TCP and UNIX socket communication
 - Bluetooth and ALSA support out of the box
 - Companion library to send PA commands and handle events using JavaScript
@@ -24,7 +25,7 @@ volumes:
 services:
 
   audio:
-    image: balenablocks/audio:raspberrypi4-64  # See supported devices for other archs
+    image: balenablocks/audio
     privileged: true
     labels:
       io.balena.features.dbus: 1  # Only required for bluetooth support
@@ -91,7 +92,7 @@ Here are some of the most common extension cases:
 - Pass a flag to the PulseAudio server:
 
 ```Dockerfile
-FROM balenablocks/audio:%%BALENA_MACHINE_NAME%%
+FROM balenablocks/audio
 
 CMD [ "--disallow-module-loading" ]
 ```
@@ -99,7 +100,7 @@ CMD [ "--disallow-module-loading" ]
 - Add custom configuration files:
 
 ```Dockerfile
-FROM balenablocks/audio:%%BALENA_MACHINE_NAME%%
+FROM balenablocks/audio
 
 COPY custom.pa /usr/src/custom.pa
 CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
@@ -108,7 +109,7 @@ CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
 - Start PulseAudio from your own bash script:
 
 ```Dockerfile
-FROM balenablocks/audio:%%BALENA_MACHINE_NAME%%
+FROM balenablocks/audio
 
 COPY custom.pa /usr/src/custom.pa
 COPY start.sh /usr/src/start.sh
