@@ -25,15 +25,15 @@
     "CHANGELOG.md",
     "LICENSE"
   ],
-  "publishConfig": { 
-    "registry": "https://npm.pkg.github.com/" 
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
     "@tmigone/pulseaudio": "^0.1.8",
-    "@types/node": "^14.0.14",
     "ts-retry-promise": "^0.5.0"
   },
   "devDependencies": {
+    "@types/node": "^15.6.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   }
