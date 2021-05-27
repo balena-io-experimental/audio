@@ -10,6 +10,8 @@ export interface BalenaAudioInfo {
 export default class BalenaAudio extends PAClient {
 
   public defaultSink: string
+  public connected: boolean = false
+
   constructor(
     public address: string = 'tcp:audio:4317',
     public subToEvents: boolean = true,
@@ -51,8 +53,10 @@ export default class BalenaAudio extends PAClient {
 
   async connectWithRetry(): Promise<AuthInfo> {
     return await retry(async () => {
-      return await this.connect()
-    }, { retries: 'INFINITELY', delay: 5000, backoff: 'LINEAR', timeout: 10 * 60 * 1000, logger: (msg) => { console.log(`Error connecting to audio block - ${msg}`) } })
+      const authInfo = await this.connect()
+      this.connected = true
+      return authInfo
+    }, { retries: 'INFINITELY', delay: 1000, backoff: 'LINEAR', timeout: 10 * 60 * 1000, logger: (msg) => { console.log(`Error connecting to audio block - ${msg}`) } })
   }
 
   async getInfo() {

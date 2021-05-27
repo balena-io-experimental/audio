@@ -18,8 +18,11 @@ async function main () {
   })
 
   // Set volume to 100%
-  await client.setVolume(100)
-
+  await client.setVolume(35)
+  console.log(await client.getVolume())
+  await client.setVolume(75)
+  console.log(await client.getVolume())
+  
   // // Play with a decreasing volume pattern
   // let vol = 100
   // setInterval(async () => {
