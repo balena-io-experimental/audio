@@ -2,7 +2,9 @@
 # Alpine 3.12 pins PulseAudio version to 13.x.x
 # See https://pkgs.alpinelinux.org/packages?name=pulseaudio&branch=v3.12
 
-FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine:3.12-run
+ARG BALENA_ARCH=%%BALENA_ARCH%%
+
+FROM balenalib/$BALENA_ARCH-alpine:3.12-run
 WORKDIR /usr/src
 
 # UDev is required to autodetect ALSA devices
