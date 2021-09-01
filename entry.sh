@@ -145,11 +145,27 @@ function print_audio_cards () {
   cat /proc/asound/cards | mawk -F '\[|\]:' 'NR%2==1 {gsub(/ /, "", $0); print $1,$2,$3}'
 }
 
+function sanitize_volume () {
+  local VOLUME="${1//%}"
+  if [[ "$VOLUME" -ge 0 && "$VOLUME" -le 100 ]]; then
+    echo "$VOLUME"
+  fi
+}
+
+function pa_set_default_volume () {
+  local VOLUME_PERCENTAGE=$(sanitize_volume "$1")
+  local VOLUME_ABSOLUTE=$(( VOLUME_PERCENTAGE * 65536 / 100 ))
+  if [[ -n "$VOLUME_ABSOLUTE" ]]; then
+    echo -e "\nset-sink-volume @DEFAULT_SINK@ $VOLUME_ABSOLUTE" >> /etc/pulse/block.pa
+  fi
+}
+
 # PulseAudio block environment variables and defaults
 INIT_LOG="${AUDIO_INIT_LOG:-true}"
 LOG_LEVEL="${AUDIO_LOG_LEVEL:-NOTICE}"
-DEFAULT_OUTPUT="${AUDIO_OUTPUT:-AUTO}"
 COOKIE="${AUDIO_PULSE_COOKIE}"
+DEFAULT_OUTPUT="${AUDIO_OUTPUT:-AUTO}"
+DEFAULT_VOLUME="${AUDIO_VOLUME:-75}"
 
 if [[ "$INIT_LOG" != "false" ]]; then
   echo "--- Audio ---"
@@ -158,6 +174,7 @@ if [[ "$INIT_LOG" != "false" ]]; then
   echo "- Pulse log level: $LOG_LEVEL"
   [[ -n ${COOKIE} ]] && echo "- Pulse cookie: $COOKIE"
   echo "- Default output: $DEFAULT_OUTPUT"
+  echo "- Default volume: $DEFAULT_VOLUME%"
   echo -e "\nDetected audio cards:"
   print_audio_cards
   echo -e "\n"
@@ -170,6 +187,7 @@ mkdir -p /run/pulse
 # ALSA CONFIG
 init_audio_hardware
 pa_set_default_output "$DEFAULT_OUTPUT"
+pa_set_default_volume "$DEFAULT_VOLUME"
 
 # PULSE AUDIO CONFIG
 # Disable PulseAudio modules that we don't support
