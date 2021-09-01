@@ -135,7 +135,6 @@ function init_audio_hardware () {
   # Intel NUC
   HDA_CARD=$(cat /proc/asound/cards | mawk -F '\[|\]:' '/hda-intel/ && NR%2==1 {gsub(/ /, "", $0); print $2}')
   if [[ -n "$HDA_CARD" ]]; then
-    echo "Initializing Intel NUC audio hardware..."
     amixer --card hda-intel --quiet cset numid=2 on,on  # Master Playback Switch --> turn on hardware
     amixer --card hda-intel --quiet cset numid=1 87,87  # Master Playback Volume --> max volume
     PA_SINK="alsa_output.hda-intel.analog-stereo"
@@ -147,19 +146,22 @@ function print_audio_cards () {
 }
 
 # PulseAudio block environment variables and defaults
+INIT_LOG="${AUDIO_INIT_LOG:-true}"
 LOG_LEVEL="${AUDIO_LOG_LEVEL:-NOTICE}"
 DEFAULT_OUTPUT="${AUDIO_OUTPUT:-AUTO}"
 COOKIE="${AUDIO_PULSE_COOKIE}"
 
-echo "--- Audio ---"
-echo "Starting audio service with settings:"
-echo "- $(pulseaudio --version)"
-echo "- Pulse log level: $LOG_LEVEL"
-[[ -n ${COOKIE} ]] && echo "- Pulse cookie: $COOKIE"
-echo "- Default output: $DEFAULT_OUTPUT"
-echo -e "\nDetected audio cards:"
-print_audio_cards
-echo -e "\n"
+if [[ "$INIT_LOG" != "false" ]]; then
+  echo "--- Audio ---"
+  echo "Starting audio service with settings:"
+  echo "- $(pulseaudio --version)"
+  echo "- Pulse log level: $LOG_LEVEL"
+  [[ -n ${COOKIE} ]] && echo "- Pulse cookie: $COOKIE"
+  echo "- Default output: $DEFAULT_OUTPUT"
+  echo -e "\nDetected audio cards:"
+  print_audio_cards
+  echo -e "\n"
+fi
 
 # Create dir for temp/share files
 mkdir -p /run/pulse
