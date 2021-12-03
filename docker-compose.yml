@@ -11,6 +11,8 @@ services:
     privileged: true
     labels:
       io.balena.features.dbus: 1    # Only required for bluetooth support
+    environment:
+      - DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket # Only required for bluetooth support
     ports:
       - 4317:4317                   # Only required if using PA over TCP socket
     volumes:
@@ -25,6 +27,8 @@ services:
       - NET_ADMIN
     labels:
       io.balena.features.dbus: 1
+    environment:
+      - DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket # Only required for bluetooth support
   
   # SOX example using TCP socket
   sox:
