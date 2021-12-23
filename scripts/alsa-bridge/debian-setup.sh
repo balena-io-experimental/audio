@@ -5,7 +5,8 @@ echo "Setting up ALSA bridge..."
 
 # Install pulse plugins for ALSA
 apt-get update
-apt-get install libasound2-plugins
+apt-get install -y --no-install-recommends libasound2-plugins
+rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 # Set PulseAudio as the default output plugin for ALSA
 mkdir -p  /usr/share/alsa/

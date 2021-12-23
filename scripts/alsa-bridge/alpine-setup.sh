@@ -2,5 +2,5 @@
 set -e
 
 echo "Setting up ALSA bridge..."
-install_packages alsa-plugins-pulse
+apk add --no-cache alsa-plugins-pulse
 echo "ALSA bridge configured correctly!"
