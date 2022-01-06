@@ -5,7 +5,7 @@ The `audio` block is a docker image that runs a [PulseAudio](https://www.freedes
 
 ## Features
 
-- PulseAudio v13 audio server
+- PulseAudio v15 audio server
 - Configuration optimized for balenaOS, extendable via PA config files
 - Supports both TCP and UNIX socket communication
 - Bluetooth and ALSA support out of the box
