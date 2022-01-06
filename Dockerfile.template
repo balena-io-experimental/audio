@@ -26,7 +26,7 @@ RUN install_packages \
 #dev-cmd-live=pulseaudio || balena-idle
 
 # PulseAudio configuration
-COPY pulseaudio/block.pa /etc/pulse/block.pa
+COPY pulseaudio/block.pa /etc/pulse/default.pa.d/00-audioblock.pa
 COPY pulseaudio/client.conf /etc/pulse/client.conf
 COPY pulseaudio/daemon.conf /etc/pulse/daemon.conf
 

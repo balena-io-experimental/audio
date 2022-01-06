@@ -19,7 +19,7 @@ services:
   # EXAMPLES SECTION
   # Bluetooth agent
   bluetooth:
-    build: ./examples/bluetooth
+    image: balenablocks/bluetooth
     network_mode: host
     cap_add:
       - NET_ADMIN
