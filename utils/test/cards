@@ -1,0 +1,4 @@
+ 0 [bcm2835-jack   ]: bcm2835_headphonbcm2835 Headphones - bcm2835 Headphones
+                      bcm2835 Headphones
+ 1 [dac            ]: RPi-simple - snd_rpi_hifiberry_dac
+                      snd_rpi_hifiberry_dac

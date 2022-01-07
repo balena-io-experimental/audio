@@ -1,0 +1,11 @@
+hello this is a sample
+text 3333
+123456
+hello this is 3333 a test
+123456
+text foo
+3333
+hi how are you
+07.01.22 11:58:21 (-0300)  audio  Detected audio cards:
+07.01.22 11:58:21 (-0300)  audio  0 bcm2835-jack bcm2835_headphonbcm2835Headphones-bcm2835Headphones
+07.01.22 11:58:21 (-0300)  audio  1 dac RPi-simple-snd_rpi_hifiberry_dac
