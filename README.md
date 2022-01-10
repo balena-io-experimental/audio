@@ -128,22 +128,10 @@ The following environment variables allow some degree of configuration:
 
 ### Companion library
 
-If you need to manipulate the block's behaviour at runtime you can connect to the PulseAudio server, send commands and receive data or events from it. You should be able to use any existing library that implements the PA client protocol over TCP/UNIX sockets (some examples: [Python](https://pypi.org/project/pulsectl/), [Rust](https://docs.rs/libpulse-binding/2.16.0/libpulse_binding/), [JavaScript](https://github.com/stanford-oval/node-pulseaudio#readme)), or you could even [write your own](https://freedesktop.org/software/pulseaudio/doxygen/). Libraries that manipulate PA over DBUS won't work because we don't run the pulse dbus daemon. 
+If you need to manipulate the block's behavior at runtime you can connect to the PulseAudio server, send commands and receive data or events from it. You should be able to use any existing library that implements the PA client protocol over TCP/UNIX sockets (some examples: [Python](https://pypi.org/project/pulsectl/), [Rust](https://docs.rs/libpulse-binding/2.16.0/libpulse_binding/), [JavaScript](https://github.com/stanford-oval/node-pulseaudio#readme)), or you could even [write your own](https://freedesktop.org/software/pulseaudio/doxygen/). Libraries that manipulate PA over dbus won't work because we don't run the pulse dbus daemon. 
 
-On this note, we built a companion javascript library that exposes the most common use cases with an easy to use interface. Install it with: 
-```npm install @balenalabs/audio-block``` (**Note**: Not published yet, you can find it in this repo at the `lib` folder). 
-
-Currently this is the exposed API (more to come), checkout `lib/example` for a fully fledged example:
-
-Class `BalenaAudio`:
-* constructor(address, cookie, subToEvents, name): 
-* start(): Connect to the block
-* setVolume(vol): Set the volume. `vol` in %.
-* getVolume(): Gets the current sink volume in %.
-* events: Listen to `play` and `stop` events.
-* [WIP] setDefaultSink(): Set the default sink
-* [WIP] getDefaultSink(): Get the default sink
-* [WIP] getSinks(): Get available sinks
+On this note, we built a companion javascript library that exposes the most common use cases with an easy to use interface, these include changing the volume, listening to play/stop events, etc. 
+You can install it with ```npm install balena-audio```; see https://github.com/balena-io-modules/balena-audio for usage and examples.
 
 ### Bluetooth
 
