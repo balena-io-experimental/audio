@@ -192,6 +192,8 @@ pa_set_default_volume "$DEFAULT_VOLUME"
 # PULSE AUDIO CONFIG
 # Disable PulseAudio modules that we don't support
 pa_disable_module module-console-kit
+pa_disable_module module-dbus-protocol
+pa_disable_module module-jackdbus-detect
 
 # Disable PulseAudio modules that need special configuration
 # These will be loaded and configured by the block.pa config file
