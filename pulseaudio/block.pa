@@ -1,12 +1,9 @@
-# Load default PulseAudio configuration
-.include /etc/pulse/default.pa
-
 # Load server protocols for clients
 load-module module-native-protocol-unix auth-anonymous=true auth-cookie-enabled=false auth-cookie=/run/pulse/pulseaudio.cookie socket=/run/pulse/pulseaudio.socket
 load-module module-native-protocol-tcp auth-anonymous=true auth-cookie-enabled=false auth-cookie=/run/pulse/pulseaudio.cookie port=4317
 
 # Try to keep bluetooth sources as A2DP profiles
-load-module module-bluetooth-policy a2dp_source=true hfgw=true auto_switch=2
+load-module module-bluetooth-policy a2dp_source=true auto_switch=2
 
 # See https://github.com/raspberrypi/linux/issues/2229#issuecomment-391397669
 load-module module-bluetooth-discover autodetect_mtu=yes headset=native

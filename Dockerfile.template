@@ -1,10 +1,10 @@
 # --- Note on PulseAudio version ---
-# Alpine 3.12 pins PulseAudio version to 13.x.x
-# See https://pkgs.alpinelinux.org/packages?name=pulseaudio&branch=v3.12
+# Alpine 3.15 pins PulseAudio version to 15.x.x
+# See https://pkgs.alpinelinux.org/packages?name=pulseaudio&branch=v3.15
 
 ARG BALENA_ARCH=%%BALENA_ARCH%%
 
-FROM balenalib/$BALENA_ARCH-alpine:3.12-run
+FROM balenalib/$BALENA_ARCH-alpine:3.15-run
 WORKDIR /usr/src
 
 # UDev is required to autodetect ALSA devices
@@ -16,7 +16,7 @@ ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 RUN install_packages \
   alsa-utils \
   mawk \
-  pulseaudio~=13 \
+  pulseaudio~=15 \
   pulseaudio-alsa \
   pulseaudio-bluez \
   pulseaudio-utils \
@@ -26,7 +26,7 @@ RUN install_packages \
 #dev-cmd-live=pulseaudio || balena-idle
 
 # PulseAudio configuration
-COPY pulseaudio/block.pa /etc/pulse/block.pa
+COPY pulseaudio/block.pa /etc/pulse/default.pa.d/00-audioblock.pa
 COPY pulseaudio/client.conf /etc/pulse/client.conf
 COPY pulseaudio/daemon.conf /etc/pulse/daemon.conf
 
