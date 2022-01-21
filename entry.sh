@@ -123,7 +123,7 @@ function pa_set_default_output () {
   # Set the sink name as PA default and save it in a temp file
   if [[ -n "$PA_SINK" ]]; then
     echo "$PA_SINK" > /run/pulse/pulseaudio.sink
-    echo -e "\nset-default-sink $PA_SINK" >> /etc/pulse/block.pa
+    echo -e "\nset-default-sink $PA_SINK" >> /etc/pulse/default.pa.d/00-audioblock.pa
   fi
 }
 
@@ -156,7 +156,7 @@ function pa_set_default_volume () {
   local VOLUME_PERCENTAGE=$(sanitize_volume "$1")
   local VOLUME_ABSOLUTE=$(( VOLUME_PERCENTAGE * 65536 / 100 ))
   if [[ -n "$VOLUME_ABSOLUTE" ]]; then
-    echo -e "\nset-sink-volume @DEFAULT_SINK@ $VOLUME_ABSOLUTE" >> /etc/pulse/block.pa
+    echo -e "\nset-sink-volume @DEFAULT_SINK@ $VOLUME_ABSOLUTE" >> /etc/pulse/default.pa.d/00-audioblock.pa
   fi
 }
 
@@ -196,7 +196,7 @@ pa_disable_module module-dbus-protocol
 pa_disable_module module-jackdbus-detect
 
 # Disable PulseAudio modules that need special configuration
-# These will be loaded and configured by the block.pa config file
+# These will be loaded and configured by /etc/pulse/default.pa.d/00-audioblock.pa
 pa_disable_module module-bluetooth-discover
 pa_disable_module module-bluetooth-policy
 pa_disable_module module-native-protocol-unix
