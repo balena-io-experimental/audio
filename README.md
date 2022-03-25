@@ -15,13 +15,12 @@ The `audio` block is a docker image that runs a [PulseAudio](https://www.freedes
 
 #### Prebuilt images
 
-We maintain images for this block using balenaHub Container Registry. The images can be accessed using:
+We maintain images for this block on balenaHub Container Registry. The images can be accessed using:
 
-`bhcr.io/balenablocks/audio-<arch>`
-
-where `<arch>` is one of rpi, armv7hf, aarch64 or amd64.
+`bh.cr/balenablocks/audio-<arch>` or `bhcr.io/balenablocks/audio-<arch>` where `<arch>` is one of: `rpi`, `armv7hf`, `aarch64` or `amd64`.
 
 For details on how to select a specific version or commit version of the image see our [documentation](https://github.com/balena-io/open-balena-registry-proxy/#usage).
+
 #### docker-compose file
 To use this image, create a container in your `docker-compose.yml` file as shown below:
 
@@ -34,7 +33,7 @@ volumes:
 services:
 
   audio:
-    image: bhcr.io/balenablocks/audio-<arch> # where <arch> is one of rpi, armv7hf, aarch64 or amd64
+    image: bh.cr/balenablocks/audio-<arch> # where <arch> is one of rpi, armv7hf, aarch64 or amd64
     privileged: true
     labels:
       io.balena.features.dbus: 1  # Only required for bluetooth support
@@ -101,7 +100,7 @@ Here are some of the most common extension cases:
 - Pass a flag to the PulseAudio server:
 
 ```Dockerfile
-FROM bhcr.io/balenablocks/audio-aarch64
+FROM bh.cr/balenablocks/audio-aarch64
 
 CMD [ "--disallow-module-loading" ]
 ```
@@ -109,7 +108,7 @@ CMD [ "--disallow-module-loading" ]
 - Add custom configuration files:
 
 ```Dockerfile
-FROM bhcr.io/balenablocks/audio-aarch64
+FROM bh.cr/balenablocks/audio-aarch64
 
 COPY custom.pa /usr/src/custom.pa
 CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
@@ -118,7 +117,7 @@ CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
 - Start PulseAudio from your own bash script:
 
 ```Dockerfile
-FROM bhcr.io/balenablocks/audio-aarch64
+FROM bh.cr/balenablocks/audio-aarch64
 
 COPY custom.pa /usr/src/custom.pa
 COPY start.sh /usr/src/start.sh
