@@ -2,7 +2,7 @@ name: audio
 description: >-
   Provides an easy way to work with audio applications in a containerized
   environment.
-version: 0.5.1
+version: 0.5.2
 type: sw.application
 assets:
   repository:
