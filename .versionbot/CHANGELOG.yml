@@ -1,0 +1,644 @@
+- commits:
+    - subject: moving from balenablocks to balena-labs-projects
+      hash: e6f2272655d8c3414770c48222f4f3e27279d09f
+      body: ""
+      footer:
+        Signed-off-by: Flynn Joffray <flynn@balena.io>
+        signed-off-by: Flynn Joffray <flynn@balena.io>
+        Change-type: patch
+        change-type: patch
+      author: Flynn Joffray
+      nested: []
+  version: 0.5.6
+  title: ""
+  date: 2022-11-15T22:58:20.624Z
+- version: 0.5.5
+  date: 2022-03-29T14:23:09Z
+  commits:
+    - hash: c8f88ed7cb522942be944ade221b8476c6e4d383
+      author: Tomás Migone
+      footers:
+        change-type: patch
+        signed-off-by: Tomás Migone <tomas@balena.io>
+      subject: "meta: rename compose file"
+      body: |-
+        docker-compose has priority over Dockerfile when building a release
+        so all test services were being built and published to the block
+- version: 0.5.4
+- date: 2022-03-25T14:53:41Z
+- commits:
+    - hash: 91e7abc9010e25b3b2990a60f2aad46bd5ef72f6
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: Update README.md
+- commits:
+    - body: null
+- version: 0.5.3
+- date: 2022-03-25T14:16:52Z
+- commits:
+    - hash: 06a466eea739eaec1e019e94c51d382ee029b2bb
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: Update README.md
+- commits:
+    - body: null
+- version: 0.5.2
+- date: 2022-03-25T13:29:36Z
+- commits:
+    - hash: aeb68adc92c15e8233979d1b5ba1567db55a2386
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "meta: use balenaHub container registry instead of docker"
+- commits:
+    - body: null
+- version: 0.5.1
+- date: 2022-01-21T14:40:28Z
+- commits:
+    - hash: 01ef97fc3d7b237295330842420fc7f8cf94c0da
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "meta: force versionbot to run"
+- commits:
+    - body: null
+- commits:
+    - hash: af4a19d79443b74af42e6d5a948e3689fb4224be
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        closes: "#91"
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "defaults: fix default output and volume not being set properly"
+- commits:
+    - body: null
+- commits:
+    - hash: 17c4310bfc4604207e44504789d47734d379960c
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        closes: "#74"
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "balena-audio: remove lib code, update readme"
+- commits:
+    - body: null
+- commits:
+    - hash: 00a092df61c153b82bae359d607c522c41f1edc0
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "pa: disable dbus modules"
+- commits:
+    - body: null
+- version: 0.5.0
+- date: 2022-01-10T13:58:56Z
+- commits:
+    - hash: a0bbb325a4d88fd0749cc746993a6ea3fa0864ba
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        closes: "#84"
+- commits:
+    - footers:
+        change-type: minor
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "pulseaudio: bump to version 15"
+- commits:
+    - body: null
+- version: 0.4.1
+- date: 2021-12-23T13:23:10Z
+- commits:
+    - hash: 25039d48e0669861e867aab8557e4a851054bb16
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        closes: "#82"
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "bridge: replace install_packages with apk/apt"
+- commits:
+    - body: null
+- version: 0.4.0
+- date: 2021-09-02T15:42:58Z
+- commits:
+    - hash: 96c9370f4383c254138f916dfeb8061bab913a8e
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: minor
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "env: add variable to control init volume for default output"
+- commits:
+    - body: null
+- version: 0.3.0
+- date: 2021-09-02T15:16:26Z
+- commits:
+    - hash: 5618b4bb267e9becbb9ebb732055c80a31e159d7
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: minor
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "env: added variable to disable init logs"
+- commits:
+    - body: null
+- version: 0.2.4
+- date: 2021-06-30T15:31:32Z
+- commits:
+    - hash: ac636715b00b8429fc6b5eaf5c479c90daff399f
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "meta: remove CODEOWNERS file"
+- commits:
+    - body: null
+- version: 0.2.3
+- date: 2021-05-31T12:07:15Z
+- commits:
+    - hash: 4196918a9e8c8a30badcd5588ad76d3dfc5422c2
+- commits:
+    - author: Rahul Thakoor
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Rahul Thakoor <rahul@balena.io>
+- commits:
+    - subject: Build blocks by arch type
+- commits:
+    - body: null
+- version: 0.2.2
+- date: 2021-05-27T15:15:57Z
+- commits:
+    - hash: a3ed78582329c140d7f2d1ec9469dfc2493ae184
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "lib: add connected check before issuing commands to PA"
+- commits:
+    - body: null
+- version: 0.2.1
+- date: 2021-05-19T20:55:56Z
+- commits:
+    - hash: d046a08b0ed70e7d004d30ad08446339c91a3290
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: Rename primitive to block
+- commits:
+    - body: null
+- version: 0.2.0
+- date: 2021-05-19T19:47:53Z
+- commits:
+    - hash: 730f0369c42e23ea547033e20df6a22840b9f380
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: minor
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "base image: use alpine instead of debian"
+- commits:
+    - body: |-
+        Pi Zero and Pi1 boards have been running alpine for some time.
+        Image size reduced from 300MB to 100MB aprox.
+- version: 0.1.13
+- date: 2021-05-17T12:58:16Z
+- commits:
+    - hash: c7b86456e816b3b27e881920690a73100c7a5dea
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "meta: update logo"
+- commits:
+    - body: null
+- commits:
+    - hash: 5400d1610bb8570118371d896043b72d5658c304
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        closes: "#62"
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "rpi: use alpine base images for raspberry-pi images"
+- commits:
+    - body: null
+- version: 0.1.12
+- date: 2021-03-05T18:15:01Z
+- commits:
+    - hash: 785b6c97818f4af05178b95d7cb5e315bd684dc4
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        connects-to: "#60"
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "pulseaudio: pin version to v13"
+- commits:
+    - body: |-
+        Ensure pulseaudio version can't be upgraded unwillingly.
+        Related to: https://github.com/balenalabs/balena-sound/issues/423
+- version: 0.1.11
+- date: 2021-03-01T13:12:48Z
+- commits:
+    - hash: b5a1f480d9c992e38e872c7df9040c5fda846301
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "meta: force versionist to update balena.yml version"
+- commits:
+    - body: null
+- version: 0.1.10
+- date: 2021-02-26T12:37:56Z
+- commits:
+    - hash: 072ab633976a38646b44ca5930cba5f1c15eebcf
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "meta: sync balena.yml version"
+- commits:
+    - body: null
+- version: 0.1.9
+- date: 2021-02-23T15:51:51Z
+- commits:
+    - hash: b45549992e31fc7b840374e644dde379334d23b7
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "versionist: test versionist with balena.yml version specified"
+- commits:
+    - body: null
+- version: 0.1.8
+- date: 2021-02-23T15:31:26Z
+- commits:
+    - hash: a5e447abc5ff4f24bd987627e6206acc629d7bd0
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "versionist: test new version in balena.yml contract"
+- commits:
+    - body: null
+- version: 0.1.7
+- date: 2021-02-03T13:01:49Z
+- commits:
+    - hash: 429d9eb1ebba9edf3d0a2b7cbebe59a9ac095723
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: Update balena.yml
+- commits:
+    - body: null
+- version: 0.1.6
+- date: 2021-02-02T15:00:25Z
+- commits:
+    - hash: 6743b5546a0f04df0a72a52de5a45fb8e3aac97c
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "examples: update PULSE_SINK, don't specify one unless required"
+- commits:
+    - body: null
+- version: 0.1.5
+- date: 2021-01-29T12:53:58Z
+- commits:
+    - hash: 3ff31865642138b11c46510674fe5ff2952339be
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "meta: Add files for hub"
+- commits:
+    - body: null
+- version: 0.1.4
+- date: 2021-01-19T13:26:38Z
+- commits:
+    - hash: 5bdc909142a8f4dcadbdc96763b33ac9f88ce326
+- commits:
+    - author: Aaron Shaw
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Aaron Shaw <aaron@balena.io>
+- commits:
+    - subject: "meta: add tinkerboard builds"
+- commits:
+    - body: "add builds for asus-tinker-board and asus-tinker-board-s\r
+
+        \r"
+- version: 0.1.3
+- date: 2021-01-01T16:19:18Z
+- commits:
+    - hash: 665774490aa3efe92907a2e2fde47e067fe0aa1b
+- commits:
+    - author: Aaron Shaw
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Aaron Shaw <aaron@balena.io>
+- commits:
+    - subject: "scripts: typo fix on comment"
+- commits:
+    - body: "minor typo fix on script comment\r
+
+        \r"
+- commits:
+    - hash: 578d08f2b6d27918e185c9ecbfabe43859999515
+- commits:
+    - author: Aaron Shaw
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Aaron Shaw <aaron@balena.io>
+- commits:
+    - subject: "udev rules: add more driver names"
+- commits:
+    - body: Add additional drivers to support the full range of Raspberry Pi audio
+        cards.
+- version: 0.1.2
+- date: 2020-12-01T19:49:29Z
+- commits:
+    - hash: b3033ddcd3b42a951cd9775b6572c55fb6f6ee01
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "alsa-bridge: Improve installation command, add success message"
+- commits:
+    - body: null
+- version: 0.1.1
+- date: 2020-11-27T17:57:19Z
+- commits:
+    - hash: 877a7874af798992af2e14cfb7407109daa43ebb
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "meta: build generic x86 image"
+- commits:
+    - body: null
+- version: 0.1.0
+- date: 2020-11-13T13:44:07Z
+- commits:
+    - hash: 106bcdb95676170728de587f68ce5a78c2364dae
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "meta: test versionbot"
+- commits:
+    - body: null
+- commits:
+    - hash: b5ff536c98d876e4531300cbd90c471d7c099826
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "meta: add codeowners"
+- commits:
+    - body: null
+- commits:
+    - hash: 46f10fa890e170e2178a06c7045b00501b075a68
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "meta: enable versionbot"
+- commits:
+    - body: null
+- commits:
+    - hash: 5cdfb19a3dfb3181e6615955f8c5448961266d5f
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        connects-to: "#39"
+- commits:
+    - footers:
+        change-type: minor
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "raspberrypi: Fixes for devices running linux kernel 5.4"
+- commits:
+    - body: |-
+        BCM2835 chip is configured differently in 5.4, exposing HDMI and
+        headphones jack as different audio cards.
+- commits:
+    - hash: 818da58a9523e67026d1ba68d3b2e46059bf8b6d
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: minor
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "libs: add multiple pa libs to test"
+- commits:
+    - body: null
+- commits:
+    - hash: e828252f8ded176f3ff57ef6fd7d018087189b7a
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "pulseaudio: add ALSA output selector"
+- commits:
+    - body: null
+- commits:
+    - hash: 51e9887f7f3e45e578535e9851938742b3bd0ab2
+- commits:
+    - author: Tomás Migone
+- commits:
+    - footers:
+        change-type: patch
+- commits:
+    - footers:
+        signed-off-by: Tomás Migone <tomas@balena.io>
+- commits:
+    - subject: "pa: remove dockerfile tests"
+- commits:
+    - body: null
