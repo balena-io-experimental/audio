@@ -17,7 +17,7 @@ The `audio` block is a docker image that runs a [PulseAudio](https://www.freedes
 
 We maintain images for this block on balenaHub Container Registry. The images can be accessed using:
 
-`bh.cr/balenablocks/audio-<arch>` or `bhcr.io/balenablocks/audio-<arch>` where `<arch>` is one of: `rpi`, `armv7hf`, `aarch64` or `amd64`.
+`bh.cr/balenalabs/audio-<arch>` or `bhcr.io/balenalabs/audio-<arch>` where `<arch>` is one of: `rpi`, `armv7hf`, `aarch64` or `amd64`.
 
 For details on how to select a specific version or commit version of the image see our [documentation](https://github.com/balena-io/open-balena-registry-proxy/#usage).
 
@@ -33,7 +33,7 @@ volumes:
 services:
 
   audio:
-    image: bh.cr/balenablocks/audio-<arch> # where <arch> is one of rpi, armv7hf, aarch64 or amd64
+    image: bh.cr/balenalabs/audio-<arch> # where <arch> is one of rpi, armv7hf, aarch64 or amd64
     privileged: true
     labels:
       io.balena.features.dbus: 1  # Only required for bluetooth support
@@ -87,7 +87,7 @@ Setting up the ALSA bridge requires extra configuration steps on your containers
 Before making use of audio capabilities you should run this script. An easy way to do so is by including the following instruction in your `Dockerfile`:
 
 ```Dockerfile
-RUN curl -skL https://raw.githubusercontent.com/balenablocks/audio/master/scripts/alsa-bridge/debian-setup.sh| sh
+RUN curl -skL https://raw.githubusercontent.com/balena-labs-projects/audio/master/scripts/alsa-bridge/debian-setup.sh| sh
 ```
 
 ## Customization
@@ -100,7 +100,7 @@ Here are some of the most common extension cases:
 - Pass a flag to the PulseAudio server:
 
 ```Dockerfile
-FROM bh.cr/balenablocks/audio-aarch64
+FROM bh.cr/balenalabs/audio-aarch64
 
 CMD [ "--disallow-module-loading" ]
 ```
@@ -108,7 +108,7 @@ CMD [ "--disallow-module-loading" ]
 - Add custom configuration files:
 
 ```Dockerfile
-FROM bh.cr/balenablocks/audio-aarch64
+FROM bh.cr/balenalabs/audio-aarch64
 
 COPY custom.pa /usr/src/custom.pa
 CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
@@ -117,7 +117,7 @@ CMD [ "pulseaudio", "--file /usr/src/custom.pa" ]
 - Start PulseAudio from your own bash script:
 
 ```Dockerfile
-FROM bh.cr/balenablocks/audio-aarch64
+FROM bh.cr/balenalabs/audio-aarch64
 
 COPY custom.pa /usr/src/custom.pa
 COPY start.sh /usr/src/start.sh
@@ -143,7 +143,7 @@ You can install it with ```npm install balena-audio```; see https://github.com/b
 
 ### Bluetooth
 
-Bluetooth support for PulseAudio is enabled out of the box. Note that this only provides the backend that routes bluetooth packets over to PulseAudio, this does not include the Bluetooth agent that's required for initiating a connection and pairing devices. Check out our [Bluetooth block](https://github.com/balenablocks/bluetooth) for an easy to use Bluetooth agent.
+Bluetooth support for PulseAudio is enabled out of the box. Note that this only provides the backend that routes bluetooth packets over to PulseAudio, this does not include the Bluetooth agent that's required for initiating a connection and pairing devices. Check out our [Bluetooth block](https://github.com/balena-labs-projects/bluetooth) for an easy to use Bluetooth agent.
 
 ## Supported devices
 The audio block has been tested to work on the following devices:
@@ -158,5 +158,5 @@ The audio block has been tested to work on the following devices:
 | Jetson Nano <sup>1</sup> | - HDMI (`tegrahda`): ✘ <br>- I2S DAC (`tegrasndt210ref`): ?<sup>2</sup> <br>- USB (`snd-usb-audio`): ✔ |
 | BeagleBone Black | - USB (`snd-usb-audio`): ✔ |
 
-1: Audio block crashes if no USB/DAC present. See: https://github.com/balenablocks/audio/issues/35
+1: Audio block crashes if no USB/DAC present. See: https://github.com/balena-labs-projects/audio/issues/35
 2: Not tested. PR's welcome.

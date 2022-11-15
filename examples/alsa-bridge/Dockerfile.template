@@ -11,7 +11,7 @@ RUN pip3 install simpleaudio
 RUN curl https://www.kozco.com/tech/LRMonoPhase4.wav --silent --output test.wav
 
 # Setup ALSA bridge
-RUN curl --silent https://raw.githubusercontent.com/balenablocks/audio/master/scripts/alsa-bridge/debian-setup.sh | sh
+RUN curl --silent https://raw.githubusercontent.com/balena-labs-projects/audio/master/scripts/alsa-bridge/debian-setup.sh | sh
 
 COPY . .
 
