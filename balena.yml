@@ -8,11 +8,11 @@ assets:
   repository:
     type: blob.asset
     data:
-      url: 'https://github.com/balenablocks/audio'
+      url: 'https://github.com/balena-labs-projects/audio'
   logo:
     type: blob.asset
     data:
-      url: 'https://raw.githubusercontent.com/balenablocks/audio/master/logo.png'
+      url: 'https://raw.githubusercontent.com/balena-labs-projects/audio/master/logo.png'
 data:
   defaultDeviceType: raspberrypi4-64
   supportedDeviceTypes:
